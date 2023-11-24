@@ -232,188 +232,307 @@
 // Functions Accepting Callback Functions
 /////////////////////////////////////////////////////////////////////
 
-//generic function
-const oneWord = function (str) {
-  //   and then we're going to select all these spaces.
-  // And remember for that,
-  // we need to use this regular expression
-  // with the G flag and then replace them
-  // with simply an empty string.
-  return str.replace(/ /g, '').toLowerCase();
+// //generic function
+// const oneWord = function (str) {
+//   //   and then we're going to select all these spaces.
+//   // And remember for that,
+//   // we need to use this regular expression
+//   // with the G flag and then replace them
+//   // with simply an empty string.
+//   return str.replace(/ /g, '').toLowerCase();
+// };
+
+// const upperFirstWord = function (str) {
+//   const [first, ...others] = str.split(' ');
+//   return [first.toUpperCase(), ...others].join(' ');
+// };
+
+// //  higher-order functions
+// const transformer = function (str, fn) {
+//   console.log(`Original string: ${str}`);
+
+//   //   And so this is where we will now call the function.
+//   // Now, inside of the transformer function,
+//   // this upper ward is now called F N right?
+//   // So that's the second parameter here.
+//   // And so F N and then with the past in string.
+//   console.log(`Transformed string: ${fn(str)}`);
+
+//   //   that functions even have methods remember,
+//   // and besides methods,
+//   // functions can even have properties.
+//   // And one of them is the name property.
+//   // So again we take F N,
+//   // which is the function that
+//   // this higher order transformer gets as an input.
+//   // And then on that we can read the name property.
+//   // And so now let's see the result of this operation.
+//   // And so let's take a look at our interesting output.
+//   // So of course the original string looks familiar,
+//   // but then the transformed string indeed,
+//   // was transformed just as we hoped it would.
+//   // So the first word is the uppercase.
+//   // And so that is of course the work of this function here.
+//   // Finally, we can also see that
+//   // it was transformed by upper first word.
+//   // And so that's FN.Name.
+//   // So as the property says,
+//   // it is really just the name of the function.
+//   console.log(`Transformed by: ${fn.name}`);
+// };
+
+// // how we are only passing in the function value itself.
+// // So really just the value,
+// // we are not calling this function here.
+// // Okay, We are only passing it in and it will be to
+// // transformer function calling this function.
+
+// transformer('JavaScript is the best!', upperFirstWord); //upperFirstWord -> and into that function we are passing the callback function
+// // And that's because we do not call them ourselves.
+// // But instead we call JavaScript to basically tell them later.
+
+// transformer('JavaScript is the best!', oneWord);
+
+// const high5 = function () {
+//   console.log('✋');
+// };
+
+// //JS uses callback all the time
+// document.body.addEventListener('click', high5);
+
+// // So it's just a callback that JavaScript,
+// // will call as soon as we click on the body.
+// // So you'll see down there now they appear.
+// // And so only then they call back is really called.
+// // And there are many other examples
+// // And there are many other examples
+// // in the JavaScript language.
+// // And this concept of callback functions is used
+// // all the time in built in JavaScript functions.
+
+// ['Jonas', 'Martha', 'Adam'].forEach(high5);
+
+// // And so let's now actually take a minute or two
+// // to understand why that is.
+// // Why our callback functions so much used in JavaScript
+// // and why are they so helpful?
+// // Well, the first big advantage of this
+// // is that it makes it easy to split up or code
+// // into more reusable and interconnected parts.
+
+// // But there is a second and way more important advantage,
+// // which is the fact that callback functions
+// // allow us to create abstraction.
+
+// // So what we did here in our code example was to create a
+// // level of abstraction and abstraction
+// // is something really important in programming.
+// // So basically what abstract and means,
+// // is that we hide the detail of some code
+// // implementation because we don't really care
+// // about all that detail.
+// // And this allows us to think
+// // about problems at a higher more abstract level.
+// // And so that's why it's called an obstruction.
+
+// // So coming back to our example here,
+// // this transform a function does not care at all,
+// // how the string is transformed.
+// // It doesn't care about this level of detail.
+// // Okay, all that wants to do is to transform a string,
+// // but it doesn't care how it should do it.
+
+// // So what I mean is that we could have taken,
+// // this coat here and written it directly into transformer,
+// // or even this coat here,
+// // right.
+// // That would have worked just the same,
+
+// // but instead we abstracted this
+// // coat away into other functions.
+// // So again, we created a new level of obstruction
+// // and by doing this or main transformer function,
+// // here is really only concerned
+// // with transforming the input string itself.
+// // But no matter how that transforming itself actually works.
+
+// // So it's basically delegating the string transformation
+// // to the other lower level of functions,
+// // which are these two.
+// // Okay, and I hope this makes sense for you,
+// // but we will also come back to this idea of abstraction
+// // later when we talk about object oriented programming.
+
+// // But it's good for you to think
+// // and to talk about this stuff as soon as possible,
+// // so that you can start to get an idea for this really,
+// // important concept of abstraction.
+// // And now with this idea of obstruction
+// // and higher levels and lower levels of obstruction,
+// // here is called a higher order function.
+// // Right, and again that's basically because this function
+// // here operates at a higher level of obstruction,
+// // leaving the low level details to this low level functions.
+
+// // Now they are not really called
+// // hello order or low level functions,
+// // but that's just how I like to call
+// // them in this circumstance.
+
+// // All right,
+// // so understanding this
+// // is absolutely crucial for your process.
+// // And I actually consider this one of the most
+// // important lectures here of the course
+// // because callback functions are really,
+// // a vital part of the JavaScript language.
+// // And that's one of the main takeaways from this video.
+// // They allow us to create this kind of logic here.
+// // And so, I think it's probably a good idea,
+// // that who really reviewed us really well
+// // and maybe even write your own example,
+// // of something that you see in the real world
+// // using the same concept,
+
+// // I think that's a really good idea that you should try out.
+// // Then here in the built in functions like
+// // add event listener and for each,
+// // these callback functions are so important
+// // and so useful because we use them,
+// // to tell these functions what exactly they should do.
+// // For example, the add event listener function
+// // on its own would have no idea
+// // of what to do whenever the click event happens here.
+
+// // And so that's why we pass in the callback function here,
+// // to tell the add event listener function exactly what to do.
+// // And as you already know,
+// // this is the higher order function here
+// // with the high level of obstruction.
+// // And this here is the function with,
+// // the more lower level of obstruction.
+
+// // please take a minute to really review this lecture
+// // and build an example of your own maybe.
+// // And then I see you in the next video,
+// // where we will basically do the opposite of this one.
+// // So having functions return other functions.
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Functions Returning Functions
+/////////////////////////////////////////////////////////////////////////////////////
+
+// Let's do the opposite of the last lecture
+// and create a function that returns a new function.
+// So I'm gonna write a very simple greet function here,
+
+const greet = function (greeting) {
+  return function (name) {
+    console.log(`${greeting} ${name}`);
+  };
 };
 
-const upperFirstWord = function (str) {
-  const [first, ...others] = str.split(' ');
-  return [first.toUpperCase(), ...others].join(' ');
-};
+// So this value here now is actually now a function -> greeterHey
+// unction.
+// Okay. And essentially it is this function.
+// So what this means is that we can now call
+// this greeter function just as if it was any other function
+// that we defined ourselves.
 
-//  higher-order functions
-const transformer = function (str, fn) {
-  console.log(`Original string: ${str}`);
+// greeterHey is equal the code below
+//  function (name) {
+//   console.log(`${greeting} ${name}`);
+// };
+const greeterHey = greet('Hey');
 
-  //   And so this is where we will now call the function.
-  // Now, inside of the transformer function,
-  // this upper ward is now called F N right?
-  // So that's the second parameter here.
-  // And so F N and then with the past in string.
-  console.log(`Transformed string: ${fn(str)}`);
+greeterHey('Jonas');
+greeterHey('Steven');
 
-  //   that functions even have methods remember,
-  // and besides methods,
-  // functions can even have properties.
-  // And one of them is the name property.
-  // So again we take F N,
-  // which is the function that
-  // this higher order transformer gets as an input.
-  // And then on that we can read the name property.
-  // And so now let's see the result of this operation.
-  // And so let's take a look at our interesting output.
-  // So of course the original string looks familiar,
-  // but then the transformed string indeed,
-  // was transformed just as we hoped it would.
-  // So the first word is the uppercase.
-  // And so that is of course the work of this function here.
-  // Finally, we can also see that
-  // it was transformed by upper first word.
-  // And so that's FN.Name.
-  // So as the property says,
-  // it is really just the name of the function.
-  console.log(`Transformed by: ${fn.name}`);
-};
+// And in case you're wondering why that actually works,
+// it is because of something called a closure.
+// Now closures are a very complex and difficult
+// to understand mechanism that's part of JavaScript.
+// And so there are two separate videos at the end
+// of the section about closures.
+// So closures is one of the
+// most misunderstood topics in JavaScript.
+// So don't worry about that Now,
 
-// how we are only passing in the function value itself.
-// So really just the value,
-// we are not calling this function here.
-// Okay, We are only passing it in and it will be to
-// transformer function calling this function.
+// And of course we could also do it all in one go.
+greet('hello')('jonas');
 
-transformer('JavaScript is the best!', upperFirstWord); //upperFirstWord -> and into that function we are passing the callback function
-// And that's because we do not call them ourselves.
-// But instead we call JavaScript to basically tell them later.
+// So we can again, call greet. let's say hello now.
+// And so again this year is now a function.
+// Okay so if this is a function,
+// we can immediately call it, right? And so we call like this,
+// and then we passed into name which is the argument
+// of this function here, right? And so even though
+// this looks a bit weird, it is gonna to work.
+// And so we get hello Jonas now.All right.
 
-transformer('JavaScript is the best!', oneWord);
+// And now this example might look a bit weird
+// and unnecessary for you Like what's the point
+// of having functions returning other functions?
+// Well, this will actually become extremely
+// useful in some situations.
 
-const high5 = function () {
-  console.log('✋');
-};
+// And especially if we're using a really important
+// programming paradigm called functional programming.
+// And I think I've mentioned it sometimes throughout
+// the course and we're actually gonna
+// look at functional programming by the end of the course.
 
-//JS uses callback all the time
-document.body.addEventListener('click', high5);
+// Maybe not by the time I first published the course,
+// but certainly some point later.
+// Anyway make sure to understand this here
+// and especially this line of code.
 
-// So it's just a callback that JavaScript,
-// will call as soon as we click on the body.
-// So you'll see down there now they appear.
-// And so only then they call back is really called.
-// And there are many other examples
-// And there are many other examples
-// in the JavaScript language.
-// And this concept of callback functions is used
-// all the time in built in JavaScript functions.
+// And if you understand this, then I'm sure
+// you understood everything what happened here.
+// Now, just as a small challenge to finish here,
 
-['Jonas', 'Martha', 'Adam'].forEach(high5);
+//Challenge
+const greatArr = greeting => name => console.log(`${greeting} ${name}`);
 
-// And so let's now actually take a minute or two
-// to understand why that is.
-// Why our callback functions so much used in JavaScript
-// and why are they so helpful?
-// Well, the first big advantage of this
-// is that it makes it easy to split up or code
-// into more reusable and interconnected parts.
+greatArr('Hi')('Jonas');
 
-// But there is a second and way more important advantage,
-// which is the fact that callback functions
-// allow us to create abstraction.
+// try to rewrite this function here
+// using only arrow functions.
+// And believe me that's gonna look a little bit confusing,
+// but I'm sure you can do it.
+// So just take some time and try to rewrite
+// that greet function using arrow functions.
+// And I see you here in a minute.
 
-// So what we did here in our code example was to create a
-// level of abstraction and abstraction
-// is something really important in programming.
-// So basically what abstract and means,
-// is that we hide the detail of some code
-// implementation because we don't really care
-// about all that detail.
-// And this allows us to think
-// about problems at a higher more abstract level.
-// And so that's why it's called an obstruction.
+// so let's
+// see how it's done
+// so greet
+// Just gonna call it R,
+// so this one takes again,
+// greeting as an argument and it returns a new function.
+// So this means that it only has one line of code,
+// which returns something.
+// So all we need is this arrow.
+// And then we don't even need the curly braces
+// and we don't need to return a statement.
+// So what are we gonna return from here?
+// A new function.
 
-// So coming back to our example here,
-// this transform a function does not care at all,
-// how the string is transformed.
-// It doesn't care about this level of detail.
-// Okay, all that wants to do is to transform a string,
-// but it doesn't care how it should do it.
+// So again, an arrow function and so another arrow here,
+// and then simply this
+// let's give it a safe and a try
+// So greet R
+// and let's use hi, this time and yeah,
+// we get hi Jonas,
+// okay?
 
-// So what I mean is that we could have taken,
-// this coat here and written it directly into transformer,
-// or even this coat here,
-// right.
-// That would have worked just the same,
-
-// but instead we abstracted this
-// coat away into other functions.
-// So again, we created a new level of obstruction
-// and by doing this or main transformer function,
-// here is really only concerned
-// with transforming the input string itself.
-// But no matter how that transforming itself actually works.
-
-// So it's basically delegating the string transformation
-// to the other lower level of functions,
-// which are these two.
-// Okay, and I hope this makes sense for you,
-// but we will also come back to this idea of abstraction
-// later when we talk about object oriented programming.
-
-// But it's good for you to think
-// and to talk about this stuff as soon as possible,
-// so that you can start to get an idea for this really,
-// important concept of abstraction.
-// And now with this idea of obstruction
-// and higher levels and lower levels of obstruction,
-// here is called a higher order function.
-// Right, and again that's basically because this function
-// here operates at a higher level of obstruction,
-// leaving the low level details to this low level functions.
-
-// Now they are not really called
-// hello order or low level functions,
-// but that's just how I like to call
-// them in this circumstance.
-
-// All right,
-// so understanding this
-// is absolutely crucial for your process.
-// And I actually consider this one of the most
-// important lectures here of the course
-// because callback functions are really,
-// a vital part of the JavaScript language.
-// And that's one of the main takeaways from this video.
-// They allow us to create this kind of logic here.
-// And so, I think it's probably a good idea,
-// that who really reviewed us really well
-// and maybe even write your own example,
-// of something that you see in the real world
-// using the same concept,
-
-// I think that's a really good idea that you should try out.
-// Then here in the built in functions like
-// add event listener and for each,
-// these callback functions are so important
-// and so useful because we use them,
-// to tell these functions what exactly they should do.
-// For example, the add event listener function
-// on its own would have no idea
-// of what to do whenever the click event happens here.
-
-// And so that's why we pass in the callback function here,
-// to tell the add event listener function exactly what to do.
-// And as you already know,
-// this is the higher order function here
-// with the high level of obstruction.
-// And this here is the function with,
-// the more lower level of obstruction.
-
-// please take a minute to really review this lecture
-// and build an example of your own maybe.
-// And then I see you in the next video,
-// where we will basically do the opposite of this one.
-// So having functions return other functions.
+// So this is an even shorter way
+// of writing the same function but in my opinion,
+// it's actually a lot more confusing.
+// And that's why I wrote it using
+// this more traditional way here.
+// But in the end,
+// it's also simply one arrow function
+// returning another arrow function.
+// And so that's the essence of this video,
+// which I hope was clear to you.
