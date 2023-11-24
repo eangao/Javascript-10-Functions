@@ -78,117 +78,152 @@
 // How Passing Arguments Works: Value vs. Reference
 ///////////////////////////////////////////////////////////
 
-// In this lecture, I want to quickly talk about
-// how exactly it works to pass arguments into functions.
-// And this goes back to the video that we had
-// about primitives versus objects,
-// which, remember, we also call
-// primitive types and reference types.
-// So this is kind of a review of that lecture,
-// but applied to functions, because it's super important
-// that we really understand how primitives and objects
-// work in the context of functions.
+// // In this lecture, I want to quickly talk about
+// // how exactly it works to pass arguments into functions.
+// // And this goes back to the video that we had
+// // about primitives versus objects,
+// // which, remember, we also call
+// // primitive types and reference types.
+// // So this is kind of a review of that lecture,
+// // but applied to functions, because it's super important
+// // that we really understand how primitives and objects
+// // work in the context of functions.
 
-const flight = 'LH234';
-const jonas = {
-  name: 'Jonas Schmedtmann',
-  passport: 24739479284,
-};
+// const flight = 'LH234';
+// const jonas = {
+//   name: 'Jonas Schmedtmann',
+//   passport: 24739479284,
+// };
 
-const checkIn = function (flightNum, passenger) {
-  flightNum = 'LH999';
+// const checkIn = function (flightNum, passenger) {
+//   flightNum = 'LH999';
 
-  //   So here, as we are manipulating the passenger object,
-  // it is exactly the same as manipulating the Jonas object.
-  // Once again, because they both are
-  // the same object in the memory heap.
-  passenger.name = 'Mr. ' + passenger.name;
+//   //   So here, as we are manipulating the passenger object,
+//   // it is exactly the same as manipulating the Jonas object.
+//   // Once again, because they both are
+//   // the same object in the memory heap.
+//   passenger.name = 'Mr. ' + passenger.name;
 
-  if (passenger.passport === 24739479284) {
-    alert('Check in');
-  } else {
-    alert('Wrong passport!');
-  }
-};
+//   if (passenger.passport === 24739479284) {
+//     alert('Check in');
+//   } else {
+//     alert('Wrong passport!');
+//   }
+// };
 
-// So when we pass a reference type to a function,
-// what is copied is really just a reference
-// to the object in the memory heap.
-// So that would be exactly like doing this.
-// So passenger
-// equals
+// // So when we pass a reference type to a function,
+// // what is copied is really just a reference
+// // to the object in the memory heap.
+// // So that would be exactly like doing this.
+// // So passenger
+// // equals
 
-checkIn(flight, jonas);
-console.log(flight);
-console.log(jonas);
+// checkIn(flight, jonas);
+// console.log(flight);
+// console.log(jonas);
 
-//Is the same as doing
-const flightNum = flight;
-const passenger = jonas;
+// //Is the same as doing
+// const flightNum = flight;
+// const passenger = jonas;
 
-// Alright, so in summary, passing a primitive type
-// to a function is really just the same
-// as creating a copy like this, outside of the function.
-// So the value is simply copied.
-// On the other hand, when we pass an object to a function,
-// it is really just like copying an object like this.
-// And so whatever we change in a copy
-// will also happen in the original.
-// Now, of course, we need to be careful
-// with this behavior and always keep it in mind.
-// That's because the fact that objects
-// behave this way when passed to functions
-// can have unforeseeable consequences in large code bases.
-// And that's especially true when you're working
-// with multiple developers.
+// // Alright, so in summary, passing a primitive type
+// // to a function is really just the same
+// // as creating a copy like this, outside of the function.
+// // So the value is simply copied.
+// // On the other hand, when we pass an object to a function,
+// // it is really just like copying an object like this.
+// // And so whatever we change in a copy
+// // will also happen in the original.
+// // Now, of course, we need to be careful
+// // with this behavior and always keep it in mind.
+// // That's because the fact that objects
+// // behave this way when passed to functions
+// // can have unforeseeable consequences in large code bases.
+// // And that's especially true when you're working
+// // with multiple developers.
 
-const newPassport = function (person) {
-  person.passport = Math.trunc(Math.random() * 100000000000);
-};
+// const newPassport = function (person) {
+//   person.passport = Math.trunc(Math.random() * 100000000000);
+// };
 
-// So, yeah, I think this is a nice example
-// of seeing how the interaction of different functions
-// with the same object can create some issues here.
-// And of course, this is just a super simple example,
-// but I'm sure you get the point, right?
-newPassport(jonas);
-checkIn(flight, jonas);
+// // So, yeah, I think this is a nice example
+// // of seeing how the interaction of different functions
+// // with the same object can create some issues here.
+// // And of course, this is just a super simple example,
+// // but I'm sure you get the point, right?
+// newPassport(jonas);
+// checkIn(flight, jonas);
 
-// Now, just to finish, in programming,
-// there are two terms that are used all the time
-// when dealing with functions,
-// which is passing by value, and passing by reference,
-// and many experienced programmers that are new to JavaScript
-// have some confusion between these terms
-// and how it works in JavaScript.
-// And so I wanna quickly address that here as well.
+// // Now, just to finish, in programming,
+// // there are two terms that are used all the time
+// // when dealing with functions,
+// // which is passing by value, and passing by reference,
+// // and many experienced programmers that are new to JavaScript
+// // have some confusion between these terms
+// // and how it works in JavaScript.
+// // And so I wanna quickly address that here as well.
 
-// So JavaScript does not have passing by reference,
-// only passing by value,
-// even though it looks like it's passing by reference.
-// So there are languages like C++,
-// where you can pass a reference to any value,
-// instead of the value itself.
-// This works even with primitives,
-// so you could pass a reference to the value of five,
-// and then the original value,
-// outside of the function, would be changed.
-// And this is called pass by reference.
+// // So JavaScript does not have passing by reference,
+// // only passing by value,
+// // even though it looks like it's passing by reference.
+// // So there are languages like C++,
+// // where you can pass a reference to any value,
+// // instead of the value itself.
+// // This works even with primitives,
+// // so you could pass a reference to the value of five,
+// // and then the original value,
+// // outside of the function, would be changed.
+// // And this is called pass by reference.
 
-// But once again, JavaScript does not have pass by reference.
-// So if you already know some programming,
-// but are new to JavaScript, be sure to understand this.
-// And I know it's confusing, because as we just learned,
-// for objects, we do in fact pass in a reference.
-// So the memory address of the object.
-// However, that reference itself is still a value.
-// It's simply a value that contains a memory address.
-// So basically we pass a reference to the function,
-// but we do not pass by reference,
-// and this is an important distinction.
+// // But once again, JavaScript does not have pass by reference.
+// // So if you already know some programming,
+// // but are new to JavaScript, be sure to understand this.
+// // And I know it's confusing, because as we just learned,
+// // for objects, we do in fact pass in a reference.
+// // So the memory address of the object.
+// // However, that reference itself is still a value.
+// // It's simply a value that contains a memory address.
+// // So basically we pass a reference to the function,
+// // but we do not pass by reference,
+// // and this is an important distinction.
 
-// And once again,
-// I'm only telling you this because there seems to be
-// a lot of confusion going on about this topic
-// among some JavaScript beginners, and especially
-// when they come from other languages, such as C++.
+// // And once again,
+// // I'm only telling you this because there seems to be
+// // a lot of confusion going on about this topic
+// // among some JavaScript beginners, and especially
+// // when they come from other languages, such as C++.
+
+///////////////////////////////////////////////////////////////////////
+// First-Class and Higher-Order Functions
+///////////////////////////////////////////////////////////////////////
+
+//See Lecture PDF
+
+// Let's now talk about
+// a fundamental property of the JavaScript language.
+// Which is the fact that it has first class functions.
+// This enables us to write higher order functions.
+// But what's that all about?
+// Well, let's see.
+// So, JavaScript is a language that has first class functions
+// which in technical terms
+// means that functions are so-called first citizens.
+// In practice, that means that functions
+// are simply treated as values.
+// And we already touched on that idea
+// a couple of times before,
+// but this is such an important feature of the language
+// that it's worth spending some more time talking about this.
+// Now, why does JavaScript work this way?
+// Well, it's simply because functions
+// are really just another type of objects in JavaScript.
+// And since objects are values,
+// functions are values too.
+// And since functions are values,
+// there is a bunch of interesting things
+// that we can do with them,
+// like storing them in variables or object properties.
+// And that, of course,
+// we already did a couple of times before
+
+//See Lecture PDF
