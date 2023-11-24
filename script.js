@@ -541,481 +541,621 @@
 // The call and apply Methods
 /////////////////////////////////////////////////////////
 
-// In this lecture,
-// we're gonna go back to the this keyword
-// and learn how we can set the this keyword manually
-// and also why we would want to do that.
+// // In this lecture,
+// // we're gonna go back to the this keyword
+// // and learn how we can set the this keyword manually
+// // and also why we would want to do that.
 
-const lufthansa = {
-  airline: 'Lutthansa',
-  iataCode: 'LH',
-  bookings: [],
+// const lufthansa = {
+//   airline: 'Lutthansa',
+//   iataCode: 'LH',
+//   bookings: [],
 
-  //   We also want to keep an array of bookings.
-  // So also inside of the object,
-  // and then the book method.
-  // And remember from the previous section,
-  // I will now start using the way of writing methods,
-  // using the enhanced object literal syntax.
-  // And so that's simply by defining the method like this
-  // without having to write a function.
-  // So remember, before this,
-  // we used to do this, right?
-  // And if you still prefer this syntax,
-  // you can still do this one.
-  // But I do actually prefer the new syntax.
-  // And so I'll just start using this one now.
+//   //   We also want to keep an array of bookings.
+//   // So also inside of the object,
+//   // and then the book method.
+//   // And remember from the previous section,
+//   // I will now start using the way of writing methods,
+//   // using the enhanced object literal syntax.
+//   // And so that's simply by defining the method like this
+//   // without having to write a function.
+//   // So remember, before this,
+//   // we used to do this, right?
+//   // And if you still prefer this syntax,
+//   // you can still do this one.
+//   // But I do actually prefer the new syntax.
+//   // And so I'll just start using this one now.
 
-  // book: function(){} //Old syntax
-  book(flightNum, name) {
-    console.log(
-      `${name} booked a seat on ${this.airline} flight ${this.iataCode}${flightNum}`
+//   // book: function(){} //Old syntax
+//   book(flightNum, name) {
+//     console.log(
+//       `${name} booked a seat on ${this.airline} flight ${this.iataCode}${flightNum}`
+//     );
+//     this.bookings.push({ flight: `${this.iataCode}${flightNum}`, name });
+//   },
+// };
+
+// lufthansa.book(239, 'Elmar Angao');
+// lufthansa.book(635, 'John Smith');
+// console.log(lufthansa);
+
+// // But now let's say that after some years,
+// // the Lufthansa Group created a new airline.
+// // So let's create eurowings here.
+
+// const eurowings = {
+//   airline: 'Eurowings',
+//   iataCode: 'EW',
+//   bookings: [],
+// };
+
+// // Now, taking this exact same method here
+// // and simply copying it and pasting it here
+// // is a bad practice, right?
+// // So of course, we are not gonna do that.
+// // So instead, we will just take the method
+// // and store it in an external function.
+// // And then we can reuse that function
+// // for all of the different airlines.
+// // So what I mean is to create a new function called book
+// // and we will simply set it to lufthansa.book, all right?
+// // So again, this is possible
+// // because JavaScript has first class functions.
+// // And so we can simply take this function value here.
+// // So that's this function
+// // and then store it into a new variable,
+// // which is then gonna be also the book function, okay?
+
+// ////////////////////////
+// // const book = lufthansa.book;
+
+// const book = lufthansa.book; //(flightNum: any)
+
+// // Okay, so let's try to use this book function
+// // to do a new booking now.
+// // But what do you think is gonna happen?
+// // So 23, and then let's say Sarah Williams
+// // and let's give it a save
+// // and now we get cannot read property airline of undefined.
+// // So do you know why this happened?
+// // Well, it's because this function here,
+// // the book function is now just a regular function call
+// // and so as we learned in one of the previous sections,
+// // in a regular function call,
+// // the this keyword points to undefined,
+// // at least in strict mode.
+// // All right?
+
+// //Does NOT work
+// // book(23, 'Sarah Williams');
+
+// // So once more, this book function is no longer this method.
+// // Okay?
+// // It's just not.
+// // It is now this separate function here.
+// // It's a copy of this one
+// // but it's not a method anymore,
+// // it's now a function.
+// // And so here it's a regular function call.
+// // And so therefore, the this keyword inside of it
+// // will now point to undefined.
+// // And that's why I kept telling you earlier
+// // that the this keyword depends on how the function
+// // is actually called.
+// // Okay, so make sure to understand these dynamics here.
+// // But now how do we actually fix this problem?
+// // So in other words, how do we tell JavaScript
+// // that we want to create a booking
+// // on the new Eurowings airline?
+// // Or even how do we tell it that we want
+// // to book on Lufthansa here?
+// // Well, basically, we need to tell JavaScript explicitly
+// // what the this keyword here should be like.
+// // So if we want to book a Lufthansa flight,
+// // the this keyword should point to Lufthansa
+// // but if we want to book a Eurowings flight,
+// // then the this keyword should point to Eurowings.
+// // So how do we do that?
+
+// // How do we tell JavaScript explicitly
+// // or manually what this this keyword should look like?
+// // Well, there are three function methods to do that
+// // and they are call, apply and bind.
+
+// // So instead, we use book.call, all right?
+// // And remember that a function is really just an object
+// // and objects have methods
+// // and therefore, functions can have methods too
+// // and the call method is one of them.
+// // And in the call method,
+// // the first argument is exactly
+// // what we want the this keyword to point to.
+// // So let's say we want a Eurowings flight
+// // and then as usual,
+// // the rest of the arguments.
+// // So 23 and Sarah Williams.
+// // All right?
+
+// //Call Method
+// book.call(eurowings, 23, 'Sarah Williams');
+// console.log(eurowings);
+
+// // So let's recap what happened here.
+// // So this time, we did actually
+// // not call the book function ourselves.
+// // Instead, we called the call method
+// // and it's then this call method,
+// // which will call the book function
+// // with the this keyword set to eurowings.
+// // So whatever we pass has the first argument
+// // of the call method.
+// // And so this allows us to manually
+// // and explicitly set the this keyword
+// // of any function that we want to call.
+// // Then all the arguments after the first one
+// // are simply the arguments of the original function.
+// // And so in the case of the book function,
+// // of course, that's the flight number
+// // and the passenger name.
+// // ====================================================
+
+// book.call(lufthansa, 239, 'Maray Cooper');
+// console.log(lufthansa);
+
+// // And indeed, the string that we get here
+// // is completely correct
+// // and in here, so in the Lufthansa bookings array,
+// // we now have, of course, three bookings.
+// // Okay?
+
+// // And so that, of course, happened because this time,
+// // we set the this keyword inside
+// // of the function call to lufthansa.
+// // And so now this here is again back to pointing to Lufthansa,
+// // while before, right here,
+// // it was being pointed to Eurowings, all right?
+// // So even though the code of this function
+// // is inside of the lufthansa object,
+// // we made it so that the this keyword in here
+// // pointed to eurowings.
+// // So to this object, this new one right here, okay?
+// // So we have a way now
+// // of manually manipulating the this keyword
+// // using the call method.
+// // And of course, we could now keep going
+// // and create more airlines into the Lufthansa Group,
+// // like the Swiss Air Lines.
+
+// // Air Lines.
+// // Now, of course, these property names,
+// // they all need to have the exact same format
+// // as this original object here
+// // because this method is trying to read just these properties.
+// // So it's always iataCode
+// // and bookings, as you see here, and airline.
+// // And so of course,
+// // we need to use exactly these property names here as well
+// // but just like this,
+
+// //=========================================================
+
+// const swiss = {
+//   airline: 'Swiss Air Lines',
+//   iataCode: 'LX',
+//   bookings: [],
+// };
+
+// book.call(swiss, 538, 'Mary Cooper');
+// console.log(swiss);
+
+// // ===============================
+// //Apply Method
+// const flightData = [583, 'George Cooper'];
+// book.apply(swiss, flightData);
+// console.log(swiss);
+
+// // This apply method is not that used anymore
+// // in modern JavaScript because now,
+// // we actually have a better way of doing the exact same thing.
+// // And do you know what I'm talking about?
+// // So let me show it to you.
+// // Book.call, so instead of using apply,
+// // we can still use call,
+// // again with swiss
+
+// book.call(swiss, ...flightData);
+
+// // And so right now, with modern JavaScript,
+// // I prefer to just always use the call method
+// // and then spread out the arguments from an array like this.
+// // So again, this here is exactly the same as this.
+// // So in summary, we now have yet another tool
+// // in our toolbox here
+// // and this one is one that allows us
+// // to explicitly define the this keyword
+// // in any function that we want.
+// // But there is actually yet another method
+// // which allows us to do the same thing
+// // and that's the bind method.
+// // It's more important actually
+// // than the call and apply methods,
+// // so I'm gonna leave it for the next lecture.
+
+// // So in summary, we now have yet another tool
+// // in our toolbox here
+// // and this one is one that allows us
+// // to explicitly define the this keyword
+// // in any function that we want.
+// // But there is actually yet another method
+// // which allows us to do the same thing
+// // and that's the bind method.
+// // It's more important actually
+// // than the call and apply methods,
+// // so I'm gonna leave it for the next lecture.
+
+// /////////////////////////////////////////////////////////////////
+// // The bind Method
+// /////////////////////////////////////////////////////////////////
+
+// // So let's know, learn about the bind method.
+// // And just like the call method,
+// // bind also allows us to manually set this keywords
+// // for any function call.
+// // Now, the difference is that bind
+// // does not immediately call the function.
+// // Instead it returns a new function
+// // where this keyword is bound.
+// // So it's set to whatever value we pass into bind.
+
+// //Bind method
+// // book.call(eurowings, 23, 'Sarah Williams');
+
+// const bookEW = book.bind(eurowings);
+// const bookLH = book.bind(lufthansa);
+// const bookLX = book.bind(swiss);
+
+// // And so as you see, this now looks
+// // like the normal book function call again.
+// // And that's because this function here
+// // already has the this keyword set in stone basically.
+// // And so here, of course, we no longer need to specify
+// // to these keywords again.
+// // So the signature here, so the name of the parameters
+// // is back to being simply the flight number
+// // and the passenger name, okay?
+// bookEW(23, 'Steven Williams');
+
+// const bookEW23 = book.bind(eurowings, 23);
+// bookEW23('Jonas schmedtmann');
+// bookEW23('Matha Cooper');
+
+// // And by the way, what we did here,
+// // so, basically specifying parts of the argument beforehand,
+// // is actually a common pattern called partial application.
+// // So essentially, partial application
+// // means that a part of the arguments
+// // of the original function are already applied,
+// // so which means, already set.
+// // And so that's exactly what the bookEW23 function is, right?
+
+// //with Event Listeners
+
+// // But let's start by adding a new property
+// // only to the Lufthansa object
+// lufthansa.planes = 300;
+
+// // And then we also add a new method
+// // only to the Lufthansa object,
+// lufthansa.buyPlane = function () {
+//   console.log(this);
+
+//   this.planes++;
+//   console.log(this.planes);
+// };
+
+// // lufthansa.buyPlane();
+
+// // o addEventListener here is the higher order function
+// // which receives a callback function.
+// // And so that should be lufthansa.buyPlane, all right?
+
+// //==========================
+// // document.querySelector('.buy').addEventListener('click', lufthansa.buyPlane);
+
+// // And now as I click on this button, let's see what happens.
+// // And we get not a number here.
+// // So this .Planes is now not a number.
+// // And the reason for that is that this keyword
+// // is this button element, okay?
+// // And do you know why that is?
+// // Well, in one of the theory lectures,
+// // we learned that in an event handler function,
+// // that this keyword always points to the element
+// // on which that handler is attached to.
+// // So, this is the handler function, right?
+// // And so it is attached to this element,
+// // so to this button.
+// // And therefore, inside of the handler function
+// // or the event listener, it doesn't really matter.
+// // But inside of this function,
+// // this keyword will point to the button element.
+// // And so that's why this keyword here
+// // returns this button, okay?
+
+// // So here you have yet another proof
+// // that this keyword really is set dynamically.
+// // Because if we simply called a Lufthansa.buyPlane out here,
+// // then of course, this keyword would be Lufthansa,
+// // so this object, right?
+// // Because that's the object calling the function.
+// // But in this case it is of course,
+// // this event listener function calling this function.
+// // And so therefore, the button itself
+// // will then become this keyword, okay?
+
+// // Now, how should we do that?
+// // Should we use the call method or the bind method?
+// // Well, we need to pass in a function here
+// // and not to call it.
+// // And so we already know that the call method
+// // calls the function.
+// // And so that's not what we need.
+// // And so therefore, we use bind.
+// // Because we already know that bind
+// // is gonna return a new function.
+// // And so this keyword should be Lufthansa,
+// // and so that's exactly what we define, okay?
+
+// document
+//   .querySelector('.buy')
+//   .addEventListener('click', lufthansa.buyPlane.bind(lufthansa));
+
+// //=================
+
+// //Partial application
+// // Now, just one final example here,
+// // which is again, gonna be about partial application,
+// // because this is another big use case for the bind method.
+// // And in this case of partial application,
+// // many times we are not even interested in this keywords,
+// // but we still use bind for this, all right?
+// // Now, remember that partial application
+// // means that we can preset parameters, all right?
+// // So let's start by creating a general function
+// // which adds a tax to some value.
+
+// // So this here is the general function for adding tax.
+// const addTax = (rate, value) => value + value * rate;
+// console.log(addTax(0.1, 200));
+
+// // But now let's say that there is one tax
+// // that we use all the time.
+
+// // So for example, here in Portugal,
+// // the VAT, which is value added tax, is 23%.
+// // And so we can now use the bind function
+// // on this function and preset the rate always,
+// // so that it always will be this 23%.
+// // And then we have a function
+// // which only calculates the VAT
+// // for whatever value we pass into it.
+
+// // and then the first argument of bind
+// // is this keywords, remember?
+// // But in this case, we don't care
+// // about the this keyword at all.
+// // It's not even here in the function.
+// // And so, we just say, null.
+// // It could be any other value
+// // because nothing will happen with it,
+// // but it's kind of a standard to just use null.
+// // And now we can set the rate here.
+// // So let's preset it to 23%,
+// // so 0.23, all right?
+
+// const addVAT = addTax.bind(null, 0.23);
+// // addVat = value => value + value * 0.23;
+
+// console.log(addVAT(100));
+// console.log(addVAT(23));
+
+// // just keep in mind that the order of the arguments then
+// // is important.
+// // If you want it to preset the rate,
+// // then it has to be the first argument in this function.
+// // Otherwise, this will not really work here, okay?
+
+// // Now you could argue that what we just did here
+// // could easily have been done with default parameters.
+// // But this is actually different,
+// // because this here is creating a brand new,
+// // simply, more specific function
+// // based on a more general function,
+// // which is the addTax function.
+// // And of course, the example here
+// // could be a lot more complex too, right?
+// // So this really is different
+// // because using binds,
+// // actually it really gives us a new function.
+// // So, it's as if we returned a new specific function
+// // from the addTax function.
+
+// //challenges
+
+// // And actually now I have a nice challenge for you
+// // which is to essentially rewrite this whole example here,
+// // but using the technique of one function
+// // returning another function.
+// // So we have one lecture about that
+// // and maybe you can go back and take a look at that.
+// // And then I want you to essentially,
+// // create a function that can return a function
+// // which will do just what this one does.
+// // So that's probably really challenging.
+// // So don't beat yourself up if you cannot do it.
+// // I know it is a challenge,
+// // but you can still try to take a minute or two
+// // and, yeah, really try it.
+
+// const addTaxRate = function (rate) {
+//   return function (value) {
+//     return value + value * rate;
+//   };
+// };
+
+// const addVAT2 = addTaxRate(0.23);
+// console.log(addVAT2(100));
+// console.log(addVAT2(23));
+
+// // So just to recap, we created this function,
+// // which then returns this one.
+// // So the first one is the one that needs the rate,
+// // because the rate is also what we used
+// // to define this addVAT function here, right?
+// // And so the resulting function
+// // is then the one who takes in the value.
+// // And that's why we have value here in the inner function too.
+// // Now this is just another way of doing the same thing
+// // and this is already pretty advanced stuff really.
+// // So, absolutely don't be upset
+// // if you didn't do this by yourself.
+
+///////////////////////////////////////////////////////////////////////
+// Coding Challenge #1
+///////////////////////////////////////////////////////////////////////
+
+// Let's build a simple poll app!
+// A poll has a question, an array of options from which people can choose, and an
+// array with the number of replies for each option. This data is stored in the starter
+// 'poll' object below.
+// Your tasks:
+
+// 1. Create a method called 'registerNewAnswer' on the 'poll' object. The
+// method does 2 things:
+
+// 1.1. Display a prompt window for the user to input the number of the
+// selected option. The prompt should look like this:
+// What is your favourite programming language?
+// 0: JavaScript
+// 1: Python
+// 2: Rust
+// 3: C++
+// (Write option number)
+
+// 1.2. Based on the input number, update the 'answers' array property. For
+// example, if the option is 3, increase the value at position 3 of the array by
+// 1. Make sure to check if the input is a number and if the number makes
+// sense (e.g. answer 52 wouldn't make sense, right?)
+
+// 2. Call this method whenever the user clicks the "Answer poll" button.
+
+// 3. Create a method 'displayResults' which displays the poll results. The
+// method takes a string as an input (called 'type'), which can be either 'string'
+// or 'array'. If type is 'array', simply display the results array as it is, using
+// console.log(). This should be the default option. If type is 'string', display a
+// string like "Poll results are 13, 2, 4, 1".
+
+// 4. Run the 'displayResults' method at the end of each
+// 'registerNewAnswer' method call.
+
+// 5. Bonus: Use the 'displayResults' method to display the 2 arrays in the test
+// data. Use both the 'array' and the 'string' option. Do not put the arrays in the poll
+// object! So what should the this keyword look like in this situation?
+
+// Test data for bonus:
+// § Data 1: [5, 2, 3]
+// § Data 2: [1, 5, 3, 9, 6, 1]
+
+// Hints: Use many of the tools you learned about in this and the last section �
+// GOOD LUCK �
+
+const poll = {
+  question: 'What is your favourite programming language?',
+  options: ['0: JavaScript', '1: Python', '2: Rust', '3: C++'],
+  // This generates [0, 0, 0, 0]. More in the next section!
+  answers: new Array(4).fill(0),
+
+  regsiterNewAnswer() {
+    //Get answer
+    const answer = Number(
+      prompt(
+        `${this.question}\n${this.options.join('\n')}\n(Write option number)`
+      )
     );
-    this.bookings.push({ flight: `${this.iataCode}${flightNum}`, name });
+
+    console.log(answer);
+
+    //register answer
+
+    //     But if either one of these conditions here is false,
+    // then the end operator will short circuit,
+    // and this part here is not executed.
+    // So this is a nice use case for short circuiting,
+    // because the code that we want to execute,
+    // is just one simple line of code.
+    typeof answer === 'number' &&
+      answer < this.answers.length &&
+      this.answers[answer]++;
+
+    this.displayResults();
+    this.displayResults('string');
+  },
+
+  //   And remember, it has the default set to array.
+  // And so here, we can use the ES6 default parameters,
+  // using this equal sign.
+  displayResults(type = 'array') {
+    if (type === 'array') {
+      console.log(this.answers);
+    } else if (type === 'string') {
+      // Poll results are 13, 2, 4, 1
+      console.log(`Poll results are ${this.answers.join(', ')}`);
+    }
   },
 };
 
-lufthansa.book(239, 'Elmar Angao');
-lufthansa.book(635, 'John Smith');
-console.log(lufthansa);
-
-// But now let's say that after some years,
-// the Lufthansa Group created a new airline.
-// So let's create eurowings here.
-
-const eurowings = {
-  airline: 'Eurowings',
-  iataCode: 'EW',
-  bookings: [],
-};
-
-// Now, taking this exact same method here
-// and simply copying it and pasting it here
-// is a bad practice, right?
-// So of course, we are not gonna do that.
-// So instead, we will just take the method
-// and store it in an external function.
-// And then we can reuse that function
-// for all of the different airlines.
-// So what I mean is to create a new function called book
-// and we will simply set it to lufthansa.book, all right?
-// So again, this is possible
-// because JavaScript has first class functions.
-// And so we can simply take this function value here.
-// So that's this function
-// and then store it into a new variable,
-// which is then gonna be also the book function, okay?
-
-////////////////////////
-// const book = lufthansa.book;
-
-const book = lufthansa.book; //(flightNum: any)
-
-// Okay, so let's try to use this book function
-// to do a new booking now.
-// But what do you think is gonna happen?
-// So 23, and then let's say Sarah Williams
-// and let's give it a save
-// and now we get cannot read property airline of undefined.
-// So do you know why this happened?
-// Well, it's because this function here,
-// the book function is now just a regular function call
-// and so as we learned in one of the previous sections,
-// in a regular function call,
-// the this keyword points to undefined,
-// at least in strict mode.
-// All right?
-
-//Does NOT work
-// book(23, 'Sarah Williams');
-
-// So once more, this book function is no longer this method.
-// Okay?
-// It's just not.
-// It is now this separate function here.
-// It's a copy of this one
-// but it's not a method anymore,
-// it's now a function.
-// And so here it's a regular function call.
-// And so therefore, the this keyword inside of it
-// will now point to undefined.
-// And that's why I kept telling you earlier
-// that the this keyword depends on how the function
-// is actually called.
-// Okay, so make sure to understand these dynamics here.
-// But now how do we actually fix this problem?
-// So in other words, how do we tell JavaScript
-// that we want to create a booking
-// on the new Eurowings airline?
-// Or even how do we tell it that we want
-// to book on Lufthansa here?
-// Well, basically, we need to tell JavaScript explicitly
-// what the this keyword here should be like.
-// So if we want to book a Lufthansa flight,
-// the this keyword should point to Lufthansa
-// but if we want to book a Eurowings flight,
-// then the this keyword should point to Eurowings.
-// So how do we do that?
-
-// How do we tell JavaScript explicitly
-// or manually what this this keyword should look like?
-// Well, there are three function methods to do that
-// and they are call, apply and bind.
-
-// So instead, we use book.call, all right?
-// And remember that a function is really just an object
-// and objects have methods
-// and therefore, functions can have methods too
-// and the call method is one of them.
-// And in the call method,
-// the first argument is exactly
-// what we want the this keyword to point to.
-// So let's say we want a Eurowings flight
-// and then as usual,
-// the rest of the arguments.
-// So 23 and Sarah Williams.
-// All right?
-
-//Call Method
-book.call(eurowings, 23, 'Sarah Williams');
-console.log(eurowings);
-
-// So let's recap what happened here.
-// So this time, we did actually
-// not call the book function ourselves.
-// Instead, we called the call method
-// and it's then this call method,
-// which will call the book function
-// with the this keyword set to eurowings.
-// So whatever we pass has the first argument
-// of the call method.
-// And so this allows us to manually
-// and explicitly set the this keyword
-// of any function that we want to call.
-// Then all the arguments after the first one
-// are simply the arguments of the original function.
-// And so in the case of the book function,
-// of course, that's the flight number
-// and the passenger name.
-// ====================================================
-
-book.call(lufthansa, 239, 'Maray Cooper');
-console.log(lufthansa);
-
-// And indeed, the string that we get here
-// is completely correct
-// and in here, so in the Lufthansa bookings array,
-// we now have, of course, three bookings.
-// Okay?
-
-// And so that, of course, happened because this time,
-// we set the this keyword inside
-// of the function call to lufthansa.
-// And so now this here is again back to pointing to Lufthansa,
-// while before, right here,
-// it was being pointed to Eurowings, all right?
-// So even though the code of this function
-// is inside of the lufthansa object,
-// we made it so that the this keyword in here
-// pointed to eurowings.
-// So to this object, this new one right here, okay?
-// So we have a way now
-// of manually manipulating the this keyword
-// using the call method.
-// And of course, we could now keep going
-// and create more airlines into the Lufthansa Group,
-// like the Swiss Air Lines.
-
-// Air Lines.
-// Now, of course, these property names,
-// they all need to have the exact same format
-// as this original object here
-// because this method is trying to read just these properties.
-// So it's always iataCode
-// and bookings, as you see here, and airline.
-// And so of course,
-// we need to use exactly these property names here as well
-// but just like this,
-
-//=========================================================
-
-const swiss = {
-  airline: 'Swiss Air Lines',
-  iataCode: 'LX',
-  bookings: [],
-};
-
-book.call(swiss, 538, 'Mary Cooper');
-console.log(swiss);
-
-// ===============================
-//Apply Method
-const flightData = [583, 'George Cooper'];
-book.apply(swiss, flightData);
-console.log(swiss);
-
-// This apply method is not that used anymore
-// in modern JavaScript because now,
-// we actually have a better way of doing the exact same thing.
-// And do you know what I'm talking about?
-// So let me show it to you.
-// Book.call, so instead of using apply,
-// we can still use call,
-// again with swiss
-
-book.call(swiss, ...flightData);
-
-// And so right now, with modern JavaScript,
-// I prefer to just always use the call method
-// and then spread out the arguments from an array like this.
-// So again, this here is exactly the same as this.
-// So in summary, we now have yet another tool
-// in our toolbox here
-// and this one is one that allows us
-// to explicitly define the this keyword
-// in any function that we want.
-// But there is actually yet another method
-// which allows us to do the same thing
-// and that's the bind method.
-// It's more important actually
-// than the call and apply methods,
-// so I'm gonna leave it for the next lecture.
-
-// So in summary, we now have yet another tool
-// in our toolbox here
-// and this one is one that allows us
-// to explicitly define the this keyword
-// in any function that we want.
-// But there is actually yet another method
-// which allows us to do the same thing
-// and that's the bind method.
-// It's more important actually
-// than the call and apply methods,
-// so I'm gonna leave it for the next lecture.
-
-/////////////////////////////////////////////////////////////////
-// The bind Method
-/////////////////////////////////////////////////////////////////
-
-// So let's know, learn about the bind method.
-// And just like the call method,
-// bind also allows us to manually set this keywords
-// for any function call.
-// Now, the difference is that bind
-// does not immediately call the function.
-// Instead it returns a new function
-// where this keyword is bound.
-// So it's set to whatever value we pass into bind.
-
-//Bind method
-// book.call(eurowings, 23, 'Sarah Williams');
-
-const bookEW = book.bind(eurowings);
-const bookLH = book.bind(lufthansa);
-const bookLX = book.bind(swiss);
-
-// And so as you see, this now looks
-// like the normal book function call again.
-// And that's because this function here
-// already has the this keyword set in stone basically.
-// And so here, of course, we no longer need to specify
-// to these keywords again.
-// So the signature here, so the name of the parameters
-// is back to being simply the flight number
-// and the passenger name, okay?
-bookEW(23, 'Steven Williams');
-
-const bookEW23 = book.bind(eurowings, 23);
-bookEW23('Jonas schmedtmann');
-bookEW23('Matha Cooper');
-
-// And by the way, what we did here,
-// so, basically specifying parts of the argument beforehand,
-// is actually a common pattern called partial application.
-// So essentially, partial application
-// means that a part of the arguments
-// of the original function are already applied,
-// so which means, already set.
-// And so that's exactly what the bookEW23 function is, right?
-
-//with Event Listeners
-
-// But let's start by adding a new property
-// only to the Lufthansa object
-lufthansa.planes = 300;
-
-// And then we also add a new method
-// only to the Lufthansa object,
-lufthansa.buyPlane = function () {
-  console.log(this);
-
-  this.planes++;
-  console.log(this.planes);
-};
-
-// lufthansa.buyPlane();
-
-// o addEventListener here is the higher order function
-// which receives a callback function.
-// And so that should be lufthansa.buyPlane, all right?
-
-//==========================
-// document.querySelector('.buy').addEventListener('click', lufthansa.buyPlane);
-
-// And now as I click on this button, let's see what happens.
-// And we get not a number here.
-// So this .Planes is now not a number.
-// And the reason for that is that this keyword
-// is this button element, okay?
-// And do you know why that is?
-// Well, in one of the theory lectures,
-// we learned that in an event handler function,
-// that this keyword always points to the element
-// on which that handler is attached to.
-// So, this is the handler function, right?
-// And so it is attached to this element,
-// so to this button.
-// And therefore, inside of the handler function
-// or the event listener, it doesn't really matter.
-// But inside of this function,
-// this keyword will point to the button element.
-// And so that's why this keyword here
-// returns this button, okay?
-
-// So here you have yet another proof
-// that this keyword really is set dynamically.
-// Because if we simply called a Lufthansa.buyPlane out here,
-// then of course, this keyword would be Lufthansa,
-// so this object, right?
-// Because that's the object calling the function.
-// But in this case it is of course,
-// this event listener function calling this function.
-// And so therefore, the button itself
-// will then become this keyword, okay?
-
-// Now, how should we do that?
-// Should we use the call method or the bind method?
-// Well, we need to pass in a function here
-// and not to call it.
-// And so we already know that the call method
-// calls the function.
-// And so that's not what we need.
-// And so therefore, we use bind.
-// Because we already know that bind
-// is gonna return a new function.
-// And so this keyword should be Lufthansa,
-// and so that's exactly what we define, okay?
+// poll.regsiterNewAnswer();
 
 document
-  .querySelector('.buy')
-  .addEventListener('click', lufthansa.buyPlane.bind(lufthansa));
+  .querySelector('.poll')
 
-//=================
+  // script.js:1082 Uncaught TypeError: Cannot read properties of undefined (reading 'join')
+  // .addEventListener('click', poll.regsiterNewAnswer);
 
-//Partial application
-// Now, just one final example here,
-// which is again, gonna be about partial application,
-// because this is another big use case for the bind method.
-// And in this case of partial application,
-// many times we are not even interested in this keywords,
-// but we still use bind for this, all right?
-// Now, remember that partial application
-// means that we can preset parameters, all right?
-// So let's start by creating a general function
-// which adds a tax to some value.
+  //   And there is an error.
+  // And that's because we're trying to read property join,
+  // of undefined, right here.
+  // And so the problem here is, as you might have guessed,
+  // because we talked about this before,
+  // is that the disk keyword right now, points to this element.
+  // So to this poll button here.
+  // And so again, there is because in an event handler function,
+  // such as this one here,
+  // that this keyword will always point to the element,
+  // to which it is attached.
+  // And so right now, there is this button.
+  // So to fix this, we need to bind the disk keyword.
+  // And in this case, we need to set it to the poll object.
+  // And so then, in this function here,
+  // which is the result of the bind method,
+  // so in this new function,
+  // the disk keyword will then point to the poll object.
 
-// So this here is the general function for adding tax.
-const addTax = (rate, value) => value + value * rate;
-console.log(addTax(0.1, 200));
+  .addEventListener('click', poll.regsiterNewAnswer.bind(poll));
 
-// But now let's say that there is one tax
-// that we use all the time.
+//   Well, we will have to use the call method,
+// because we will need a new disk keyword, right?
+// Because display results uses this dot answers.
+// Okay, so the answers come from the disk keyword.
+// And so if we want to have a different disk keyword,
+// then we need to use call.
+poll.displayResults.call({ answers: [5, 2, 3] }, 'string');
+poll.displayResults.call({ answers: [1, 5, 3, 9, 6, 1] });
 
-// So for example, here in Portugal,
-// the VAT, which is value added tax, is 23%.
-// And so we can now use the bind function
-// on this function and preset the rate always,
-// so that it always will be this 23%.
-// And then we have a function
-// which only calculates the VAT
-// for whatever value we pass into it.
-
-// and then the first argument of bind
-// is this keywords, remember?
-// But in this case, we don't care
-// about the this keyword at all.
-// It's not even here in the function.
-// And so, we just say, null.
-// It could be any other value
-// because nothing will happen with it,
-// but it's kind of a standard to just use null.
-// And now we can set the rate here.
-// So let's preset it to 23%,
-// so 0.23, all right?
-
-const addVAT = addTax.bind(null, 0.23);
-// addVat = value => value + value * 0.23;
-
-console.log(addVAT(100));
-console.log(addVAT(23));
-
-// just keep in mind that the order of the arguments then
-// is important.
-// If you want it to preset the rate,
-// then it has to be the first argument in this function.
-// Otherwise, this will not really work here, okay?
-
-// Now you could argue that what we just did here
-// could easily have been done with default parameters.
-// But this is actually different,
-// because this here is creating a brand new,
-// simply, more specific function
-// based on a more general function,
-// which is the addTax function.
-// And of course, the example here
-// could be a lot more complex too, right?
-// So this really is different
-// because using binds,
-// actually it really gives us a new function.
-// So, it's as if we returned a new specific function
-// from the addTax function.
-
-//challenges
-
-// And actually now I have a nice challenge for you
-// which is to essentially rewrite this whole example here,
-// but using the technique of one function
-// returning another function.
-// So we have one lecture about that
-// and maybe you can go back and take a look at that.
-// And then I want you to essentially,
-// create a function that can return a function
-// which will do just what this one does.
-// So that's probably really challenging.
-// So don't beat yourself up if you cannot do it.
-// I know it is a challenge,
-// but you can still try to take a minute or two
-// and, yeah, really try it.
-
-const addTaxRate = function (rate) {
-  return function (value) {
-    return value + value * rate;
-  };
-};
-
-const addVAT2 = addTaxRate(0.23);
-console.log(addVAT2(100));
-console.log(addVAT2(23));
-
-// So just to recap, we created this function,
-// which then returns this one.
-// So the first one is the one that needs the rate,
-// because the rate is also what we used
-// to define this addVAT function here, right?
-// And so the resulting function
-// is then the one who takes in the value.
-// And that's why we have value here in the inner function too.
-// Now this is just another way of doing the same thing
-// and this is already pretty advanced stuff really.
-// So, absolutely don't be upset
-// if you didn't do this by yourself.
+// [5, 2, 3]
+// [1, 5, 3, 9, 6, 1]
+// Now, what we did here, it's not really a real scenario,
+// but it's still good for us to use these concepts,
+// in some different ways,
+// to really get used to how all of these concepts,
+// work together.
