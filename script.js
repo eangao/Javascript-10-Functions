@@ -422,117 +422,373 @@
 // Functions Returning Functions
 /////////////////////////////////////////////////////////////////////////////////////
 
-// Let's do the opposite of the last lecture
-// and create a function that returns a new function.
-// So I'm gonna write a very simple greet function here,
+// // Let's do the opposite of the last lecture
+// // and create a function that returns a new function.
+// // So I'm gonna write a very simple greet function here,
 
-const greet = function (greeting) {
-  return function (name) {
-    console.log(`${greeting} ${name}`);
-  };
+// const greet = function (greeting) {
+//   return function (name) {
+//     console.log(`${greeting} ${name}`);
+//   };
+// };
+
+// // So this value here now is actually now a function -> greeterHey
+// // unction.
+// // Okay. And essentially it is this function.
+// // So what this means is that we can now call
+// // this greeter function just as if it was any other function
+// // that we defined ourselves.
+
+// // greeterHey is equal the code below
+// //  function (name) {
+// //   console.log(`${greeting} ${name}`);
+// // };
+// const greeterHey = greet('Hey');
+
+// greeterHey('Jonas');
+// greeterHey('Steven');
+
+// // And in case you're wondering why that actually works,
+// // it is because of something called a closure.
+// // Now closures are a very complex and difficult
+// // to understand mechanism that's part of JavaScript.
+// // And so there are two separate videos at the end
+// // of the section about closures.
+// // So closures is one of the
+// // most misunderstood topics in JavaScript.
+// // So don't worry about that Now,
+
+// // And of course we could also do it all in one go.
+// greet('hello')('jonas');
+
+// // So we can again, call greet. let's say hello now.
+// // And so again this year is now a function.
+// // Okay so if this is a function,
+// // we can immediately call it, right? And so we call like this,
+// // and then we passed into name which is the argument
+// // of this function here, right? And so even though
+// // this looks a bit weird, it is gonna to work.
+// // And so we get hello Jonas now.All right.
+
+// // And now this example might look a bit weird
+// // and unnecessary for you Like what's the point
+// // of having functions returning other functions?
+// // Well, this will actually become extremely
+// // useful in some situations.
+
+// // And especially if we're using a really important
+// // programming paradigm called functional programming.
+// // And I think I've mentioned it sometimes throughout
+// // the course and we're actually gonna
+// // look at functional programming by the end of the course.
+
+// // Maybe not by the time I first published the course,
+// // but certainly some point later.
+// // Anyway make sure to understand this here
+// // and especially this line of code.
+
+// // And if you understand this, then I'm sure
+// // you understood everything what happened here.
+// // Now, just as a small challenge to finish here,
+
+// //Challenge
+// const greatArr = greeting => name => console.log(`${greeting} ${name}`);
+
+// greatArr('Hi')('Jonas');
+
+// // try to rewrite this function here
+// // using only arrow functions.
+// // And believe me that's gonna look a little bit confusing,
+// // but I'm sure you can do it.
+// // So just take some time and try to rewrite
+// // that greet function using arrow functions.
+// // And I see you here in a minute.
+
+// // so let's
+// // see how it's done
+// // so greet
+// // Just gonna call it R,
+// // so this one takes again,
+// // greeting as an argument and it returns a new function.
+// // So this means that it only has one line of code,
+// // which returns something.
+// // So all we need is this arrow.
+// // And then we don't even need the curly braces
+// // and we don't need to return a statement.
+// // So what are we gonna return from here?
+// // A new function.
+
+// // So again, an arrow function and so another arrow here,
+// // and then simply this
+// // let's give it a safe and a try
+// // So greet R
+// // and let's use hi, this time and yeah,
+// // we get hi Jonas,
+// // okay?
+
+// // So this is an even shorter way
+// // of writing the same function but in my opinion,
+// // it's actually a lot more confusing.
+// // And that's why I wrote it using
+// // this more traditional way here.
+// // But in the end,
+// // it's also simply one arrow function
+// // returning another arrow function.
+// // And so that's the essence of this video,
+// // which I hope was clear to you.
+
+/////////////////////////////////////////////////////////
+// The call and apply Methods
+/////////////////////////////////////////////////////////
+
+// In this lecture,
+// we're gonna go back to the this keyword
+// and learn how we can set the this keyword manually
+// and also why we would want to do that.
+
+const lufthansa = {
+  airline: 'Lutthansa',
+  iataCode: 'LH',
+  bookings: [],
+
+  //   We also want to keep an array of bookings.
+  // So also inside of the object,
+  // and then the book method.
+  // And remember from the previous section,
+  // I will now start using the way of writing methods,
+  // using the enhanced object literal syntax.
+  // And so that's simply by defining the method like this
+  // without having to write a function.
+  // So remember, before this,
+  // we used to do this, right?
+  // And if you still prefer this syntax,
+  // you can still do this one.
+  // But I do actually prefer the new syntax.
+  // And so I'll just start using this one now.
+
+  // book: function(){} //Old syntax
+  book(flightNum, name) {
+    console.log(
+      `${name} booked a seat on ${this.airline} flight ${this.iataCode}${flightNum}`
+    );
+    this.bookings.push({ flight: `${this.iataCode}${flightNum}`, name });
+  },
 };
 
-// So this value here now is actually now a function -> greeterHey
-// unction.
-// Okay. And essentially it is this function.
-// So what this means is that we can now call
-// this greeter function just as if it was any other function
-// that we defined ourselves.
+lufthansa.book(239, 'Elmar Angao');
+lufthansa.book(635, 'John Smith');
+console.log(lufthansa);
 
-// greeterHey is equal the code below
-//  function (name) {
-//   console.log(`${greeting} ${name}`);
-// };
-const greeterHey = greet('Hey');
+// But now let's say that after some years,
+// the Lufthansa Group created a new airline.
+// So let's create eurowings here.
 
-greeterHey('Jonas');
-greeterHey('Steven');
+const eurowings = {
+  airline: 'Eurowings',
+  iataCode: 'EW',
+  bookings: [],
+};
 
-// And in case you're wondering why that actually works,
-// it is because of something called a closure.
-// Now closures are a very complex and difficult
-// to understand mechanism that's part of JavaScript.
-// And so there are two separate videos at the end
-// of the section about closures.
-// So closures is one of the
-// most misunderstood topics in JavaScript.
-// So don't worry about that Now,
+// Now, taking this exact same method here
+// and simply copying it and pasting it here
+// is a bad practice, right?
+// So of course, we are not gonna do that.
+// So instead, we will just take the method
+// and store it in an external function.
+// And then we can reuse that function
+// for all of the different airlines.
+// So what I mean is to create a new function called book
+// and we will simply set it to lufthansa.book, all right?
+// So again, this is possible
+// because JavaScript has first class functions.
+// And so we can simply take this function value here.
+// So that's this function
+// and then store it into a new variable,
+// which is then gonna be also the book function, okay?
 
-// And of course we could also do it all in one go.
-greet('hello')('jonas');
+////////////////////////
+// const book = lufthansa.book;
 
-// So we can again, call greet. let's say hello now.
-// And so again this year is now a function.
-// Okay so if this is a function,
-// we can immediately call it, right? And so we call like this,
-// and then we passed into name which is the argument
-// of this function here, right? And so even though
-// this looks a bit weird, it is gonna to work.
-// And so we get hello Jonas now.All right.
+const book = lufthansa.book; //(flightNum: any)
 
-// And now this example might look a bit weird
-// and unnecessary for you Like what's the point
-// of having functions returning other functions?
-// Well, this will actually become extremely
-// useful in some situations.
+// Okay, so let's try to use this book function
+// to do a new booking now.
+// But what do you think is gonna happen?
+// So 23, and then let's say Sarah Williams
+// and let's give it a save
+// and now we get cannot read property airline of undefined.
+// So do you know why this happened?
+// Well, it's because this function here,
+// the book function is now just a regular function call
+// and so as we learned in one of the previous sections,
+// in a regular function call,
+// the this keyword points to undefined,
+// at least in strict mode.
+// All right?
 
-// And especially if we're using a really important
-// programming paradigm called functional programming.
-// And I think I've mentioned it sometimes throughout
-// the course and we're actually gonna
-// look at functional programming by the end of the course.
+//Does NOT work
+// book(23, 'Sarah Williams');
 
-// Maybe not by the time I first published the course,
-// but certainly some point later.
-// Anyway make sure to understand this here
-// and especially this line of code.
+// So once more, this book function is no longer this method.
+// Okay?
+// It's just not.
+// It is now this separate function here.
+// It's a copy of this one
+// but it's not a method anymore,
+// it's now a function.
+// And so here it's a regular function call.
+// And so therefore, the this keyword inside of it
+// will now point to undefined.
+// And that's why I kept telling you earlier
+// that the this keyword depends on how the function
+// is actually called.
+// Okay, so make sure to understand these dynamics here.
+// But now how do we actually fix this problem?
+// So in other words, how do we tell JavaScript
+// that we want to create a booking
+// on the new Eurowings airline?
+// Or even how do we tell it that we want
+// to book on Lufthansa here?
+// Well, basically, we need to tell JavaScript explicitly
+// what the this keyword here should be like.
+// So if we want to book a Lufthansa flight,
+// the this keyword should point to Lufthansa
+// but if we want to book a Eurowings flight,
+// then the this keyword should point to Eurowings.
+// So how do we do that?
 
-// And if you understand this, then I'm sure
-// you understood everything what happened here.
-// Now, just as a small challenge to finish here,
+// How do we tell JavaScript explicitly
+// or manually what this this keyword should look like?
+// Well, there are three function methods to do that
+// and they are call, apply and bind.
 
-//Challenge
-const greatArr = greeting => name => console.log(`${greeting} ${name}`);
+// So instead, we use book.call, all right?
+// And remember that a function is really just an object
+// and objects have methods
+// and therefore, functions can have methods too
+// and the call method is one of them.
+// And in the call method,
+// the first argument is exactly
+// what we want the this keyword to point to.
+// So let's say we want a Eurowings flight
+// and then as usual,
+// the rest of the arguments.
+// So 23 and Sarah Williams.
+// All right?
 
-greatArr('Hi')('Jonas');
+//Call Method
+book.call(eurowings, 23, 'Sarah Williams');
+console.log(eurowings);
 
-// try to rewrite this function here
-// using only arrow functions.
-// And believe me that's gonna look a little bit confusing,
-// but I'm sure you can do it.
-// So just take some time and try to rewrite
-// that greet function using arrow functions.
-// And I see you here in a minute.
+// So let's recap what happened here.
+// So this time, we did actually
+// not call the book function ourselves.
+// Instead, we called the call method
+// and it's then this call method,
+// which will call the book function
+// with the this keyword set to eurowings.
+// So whatever we pass has the first argument
+// of the call method.
+// And so this allows us to manually
+// and explicitly set the this keyword
+// of any function that we want to call.
+// Then all the arguments after the first one
+// are simply the arguments of the original function.
+// And so in the case of the book function,
+// of course, that's the flight number
+// and the passenger name.
+// ====================================================
 
-// so let's
-// see how it's done
-// so greet
-// Just gonna call it R,
-// so this one takes again,
-// greeting as an argument and it returns a new function.
-// So this means that it only has one line of code,
-// which returns something.
-// So all we need is this arrow.
-// And then we don't even need the curly braces
-// and we don't need to return a statement.
-// So what are we gonna return from here?
-// A new function.
+book.call(lufthansa, 239, 'Maray Cooper');
+console.log(lufthansa);
 
-// So again, an arrow function and so another arrow here,
-// and then simply this
-// let's give it a safe and a try
-// So greet R
-// and let's use hi, this time and yeah,
-// we get hi Jonas,
-// okay?
+// And indeed, the string that we get here
+// is completely correct
+// and in here, so in the Lufthansa bookings array,
+// we now have, of course, three bookings.
+// Okay?
 
-// So this is an even shorter way
-// of writing the same function but in my opinion,
-// it's actually a lot more confusing.
-// And that's why I wrote it using
-// this more traditional way here.
-// But in the end,
-// it's also simply one arrow function
-// returning another arrow function.
-// And so that's the essence of this video,
-// which I hope was clear to you.
+// And so that, of course, happened because this time,
+// we set the this keyword inside
+// of the function call to lufthansa.
+// And so now this here is again back to pointing to Lufthansa,
+// while before, right here,
+// it was being pointed to Eurowings, all right?
+// So even though the code of this function
+// is inside of the lufthansa object,
+// we made it so that the this keyword in here
+// pointed to eurowings.
+// So to this object, this new one right here, okay?
+// So we have a way now
+// of manually manipulating the this keyword
+// using the call method.
+// And of course, we could now keep going
+// and create more airlines into the Lufthansa Group,
+// like the Swiss Air Lines.
+
+// Air Lines.
+// Now, of course, these property names,
+// they all need to have the exact same format
+// as this original object here
+// because this method is trying to read just these properties.
+// So it's always iataCode
+// and bookings, as you see here, and airline.
+// And so of course,
+// we need to use exactly these property names here as well
+// but just like this,
+
+//=========================================================
+
+const swiss = {
+  airline: 'Swiss Air Lines',
+  iataCode: 'LX',
+  bookings: [],
+};
+
+book.call(swiss, 538, 'Mary Cooper');
+console.log(swiss);
+
+// ===============================
+//Apply Method
+const flightData = [583, 'George Cooper'];
+book.apply(swiss, flightData);
+console.log(swiss);
+
+// This apply method is not that used anymore
+// in modern JavaScript because now,
+// we actually have a better way of doing the exact same thing.
+// And do you know what I'm talking about?
+// So let me show it to you.
+// Book.call, so instead of using apply,
+// we can still use call,
+// again with swiss
+
+book.call(swiss, ...flightData);
+
+// And so right now, with modern JavaScript,
+// I prefer to just always use the call method
+// and then spread out the arguments from an array like this.
+// So again, this here is exactly the same as this.
+// So in summary, we now have yet another tool
+// in our toolbox here
+// and this one is one that allows us
+// to explicitly define the this keyword
+// in any function that we want.
+// But there is actually yet another method
+// which allows us to do the same thing
+// and that's the bind method.
+// It's more important actually
+// than the call and apply methods,
+// so I'm gonna leave it for the next lecture.
+
+// So in summary, we now have yet another tool
+// in our toolbox here
+// and this one is one that allows us
+// to explicitly define the this keyword
+// in any function that we want.
+// But there is actually yet another method
+// which allows us to do the same thing
+// and that's the bind method.
+// It's more important actually
+// than the call and apply methods,
+// so I'm gonna leave it for the next lecture.
