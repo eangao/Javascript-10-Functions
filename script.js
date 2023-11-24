@@ -792,3 +792,230 @@ book.call(swiss, ...flightData);
 // It's more important actually
 // than the call and apply methods,
 // so I'm gonna leave it for the next lecture.
+
+/////////////////////////////////////////////////////////////////
+// The bind Method
+/////////////////////////////////////////////////////////////////
+
+// So let's know, learn about the bind method.
+// And just like the call method,
+// bind also allows us to manually set this keywords
+// for any function call.
+// Now, the difference is that bind
+// does not immediately call the function.
+// Instead it returns a new function
+// where this keyword is bound.
+// So it's set to whatever value we pass into bind.
+
+//Bind method
+// book.call(eurowings, 23, 'Sarah Williams');
+
+const bookEW = book.bind(eurowings);
+const bookLH = book.bind(lufthansa);
+const bookLX = book.bind(swiss);
+
+// And so as you see, this now looks
+// like the normal book function call again.
+// And that's because this function here
+// already has the this keyword set in stone basically.
+// And so here, of course, we no longer need to specify
+// to these keywords again.
+// So the signature here, so the name of the parameters
+// is back to being simply the flight number
+// and the passenger name, okay?
+bookEW(23, 'Steven Williams');
+
+const bookEW23 = book.bind(eurowings, 23);
+bookEW23('Jonas schmedtmann');
+bookEW23('Matha Cooper');
+
+// And by the way, what we did here,
+// so, basically specifying parts of the argument beforehand,
+// is actually a common pattern called partial application.
+// So essentially, partial application
+// means that a part of the arguments
+// of the original function are already applied,
+// so which means, already set.
+// And so that's exactly what the bookEW23 function is, right?
+
+//with Event Listeners
+
+// But let's start by adding a new property
+// only to the Lufthansa object
+lufthansa.planes = 300;
+
+// And then we also add a new method
+// only to the Lufthansa object,
+lufthansa.buyPlane = function () {
+  console.log(this);
+
+  this.planes++;
+  console.log(this.planes);
+};
+
+// lufthansa.buyPlane();
+
+// o addEventListener here is the higher order function
+// which receives a callback function.
+// And so that should be lufthansa.buyPlane, all right?
+
+//==========================
+// document.querySelector('.buy').addEventListener('click', lufthansa.buyPlane);
+
+// And now as I click on this button, let's see what happens.
+// And we get not a number here.
+// So this .Planes is now not a number.
+// And the reason for that is that this keyword
+// is this button element, okay?
+// And do you know why that is?
+// Well, in one of the theory lectures,
+// we learned that in an event handler function,
+// that this keyword always points to the element
+// on which that handler is attached to.
+// So, this is the handler function, right?
+// And so it is attached to this element,
+// so to this button.
+// And therefore, inside of the handler function
+// or the event listener, it doesn't really matter.
+// But inside of this function,
+// this keyword will point to the button element.
+// And so that's why this keyword here
+// returns this button, okay?
+
+// So here you have yet another proof
+// that this keyword really is set dynamically.
+// Because if we simply called a Lufthansa.buyPlane out here,
+// then of course, this keyword would be Lufthansa,
+// so this object, right?
+// Because that's the object calling the function.
+// But in this case it is of course,
+// this event listener function calling this function.
+// And so therefore, the button itself
+// will then become this keyword, okay?
+
+// Now, how should we do that?
+// Should we use the call method or the bind method?
+// Well, we need to pass in a function here
+// and not to call it.
+// And so we already know that the call method
+// calls the function.
+// And so that's not what we need.
+// And so therefore, we use bind.
+// Because we already know that bind
+// is gonna return a new function.
+// And so this keyword should be Lufthansa,
+// and so that's exactly what we define, okay?
+
+document
+  .querySelector('.buy')
+  .addEventListener('click', lufthansa.buyPlane.bind(lufthansa));
+
+//=================
+
+//Partial application
+// Now, just one final example here,
+// which is again, gonna be about partial application,
+// because this is another big use case for the bind method.
+// And in this case of partial application,
+// many times we are not even interested in this keywords,
+// but we still use bind for this, all right?
+// Now, remember that partial application
+// means that we can preset parameters, all right?
+// So let's start by creating a general function
+// which adds a tax to some value.
+
+// So this here is the general function for adding tax.
+const addTax = (rate, value) => value + value * rate;
+console.log(addTax(0.1, 200));
+
+// But now let's say that there is one tax
+// that we use all the time.
+
+// So for example, here in Portugal,
+// the VAT, which is value added tax, is 23%.
+// And so we can now use the bind function
+// on this function and preset the rate always,
+// so that it always will be this 23%.
+// And then we have a function
+// which only calculates the VAT
+// for whatever value we pass into it.
+
+// and then the first argument of bind
+// is this keywords, remember?
+// But in this case, we don't care
+// about the this keyword at all.
+// It's not even here in the function.
+// And so, we just say, null.
+// It could be any other value
+// because nothing will happen with it,
+// but it's kind of a standard to just use null.
+// And now we can set the rate here.
+// So let's preset it to 23%,
+// so 0.23, all right?
+
+const addVAT = addTax.bind(null, 0.23);
+// addVat = value => value + value * 0.23;
+
+console.log(addVAT(100));
+console.log(addVAT(23));
+
+// just keep in mind that the order of the arguments then
+// is important.
+// If you want it to preset the rate,
+// then it has to be the first argument in this function.
+// Otherwise, this will not really work here, okay?
+
+// Now you could argue that what we just did here
+// could easily have been done with default parameters.
+// But this is actually different,
+// because this here is creating a brand new,
+// simply, more specific function
+// based on a more general function,
+// which is the addTax function.
+// And of course, the example here
+// could be a lot more complex too, right?
+// So this really is different
+// because using binds,
+// actually it really gives us a new function.
+// So, it's as if we returned a new specific function
+// from the addTax function.
+
+//challenges
+
+// And actually now I have a nice challenge for you
+// which is to essentially rewrite this whole example here,
+// but using the technique of one function
+// returning another function.
+// So we have one lecture about that
+// and maybe you can go back and take a look at that.
+// And then I want you to essentially,
+// create a function that can return a function
+// which will do just what this one does.
+// So that's probably really challenging.
+// So don't beat yourself up if you cannot do it.
+// I know it is a challenge,
+// but you can still try to take a minute or two
+// and, yeah, really try it.
+
+const addTaxRate = function (rate) {
+  return function (value) {
+    return value + value * rate;
+  };
+};
+
+const addVAT2 = addTaxRate(0.23);
+console.log(addVAT2(100));
+console.log(addVAT2(23));
+
+// So just to recap, we created this function,
+// which then returns this one.
+// So the first one is the one that needs the rate,
+// because the rate is also what we used
+// to define this addVAT function here, right?
+// And so the resulting function
+// is then the one who takes in the value.
+// And that's why we have value here in the inner function too.
+// Now this is just another way of doing the same thing
+// and this is already pretty advanced stuff really.
+// So, absolutely don't be upset
+// if you didn't do this by yourself.
