@@ -1164,163 +1164,342 @@
 // Immediately Invoked Function Expressions (IIFE)
 ////////////////////////////////////////////////////////////////////////
 
-// ur next topic is something called,
-// Immediately Invoked Function Expressions.
-// So let's take a look at what they are.
-// So sometimes in JavaScript,
-// we need a function that is only executed once.
-// And then never again.
-// So basically a function
-// that disappears right after it's called once.
-// And this might not appear
-// to make much sense right now.
-// But we actually need this technique later.
+// // ur next topic is something called,
+// // Immediately Invoked Function Expressions.
+// // So let's take a look at what they are.
+// // So sometimes in JavaScript,
+// // we need a function that is only executed once.
+// // And then never again.
+// // So basically a function
+// // that disappears right after it's called once.
+// // And this might not appear
+// // to make much sense right now.
+// // But we actually need this technique later.
 
-// For example, with something called async/await.
-// So how could we do that?
-// Well, we could simply create a function.
-// And then only execute it once.
-// So, run, once, function.
-// This will never run again.
+// // For example, with something called async/await.
+// // So how could we do that?
+// // Well, we could simply create a function.
+// // And then only execute it once.
+// // So, run, once, function.
+// // This will never run again.
 
-const runOnce = function () {
-  console.log('This will never run again');
+// const runOnce = function () {
+//   console.log('This will never run again');
+// };
+// runOnce();
+
+// // Now, if we try to run this,
+// // we will get an error for now.
+// // So it says function statements require a function name.
+// // And that's because
+// // of course JavaScript here expects a function statement.
+// // Because we simply started this line of code here
+// // with the function keyword.
+// // However, we can still trick JavaScript
+// // into thinking that this is just an expression.
+// // And we do that by simply wrapping all
+// // of this into parentheses.
+// // And so now
+// // we basically transformed the statement that we had before
+// // into an expression.
+// // And so now if we save this,
+// // we get no error.
+// // But also this function didn't execute yet, right?
+
+// // We never called it.
+// // So we know that this here is the function.
+// // And so, we can then immediately call it.
+// // And so with this,
+// // we will get now this text here locked
+// // to the console, to string.
+// // And indeed here it is, alright?
+// // So again this here,
+// // is really just the function value.
+// // So it's just a function expression.
+// // And then immediately, we call it here.
+// // And so this is why this pattern here,
+// // is called the Immediately Invoked Function Expression.
+// // Or IIFE for short.
+
+// // IIFE
+// (function () {
+//   console.log('This will never run again');
+//   const isPrivate = 23;
+// })();
+
+// // IIFE - uing arrow function
+
+// // And the same would of course,
+// // also work for an arrow function.
+// // So let's just copy this.
+// // This will also never run again.
+// // So if we try to call it like this,
+// // then it would not work.
+// // And so,
+// // we actually don't get an error.
+// // But also nothing happens.
+// // So we first need to wrap this into parentheses.
+// // And then as we called it.
+// // Then here it is.
+// // Okay, so two ways of writing
+// // an Immediately Invoked Function Expression.
+// (() => console.log('This will never run again'))();
+
+// // But you might be wondering,
+// // why was this pattern actually invented?
+// // Well, we already know that functions create scopes, right?
+// // And what's important here
+// // is that one scope does not have access
+// // to variables from an inner scope, right?
+// // For example, right here in this global scope.
+// // We do not have access to any variables that
+// // are defined in the scope
+// // of any of these functions here, right?
+
+// // So for example,
+// // let's add a variable here.
+// // Let's say, is private = 23.
+// // And then as we tried to access it out here.
+// // You already know that it's not going to work, right?
+// // And that's because the scope chain
+// // only works the other way around.
+// // So the inner scope would have access
+// // to anything defined outside,
+// // here in the global scope.
+// // But the other way around,
+// // the global scope does not have access to anything,
+// // that is inside of a scope.
+
+// // const isPrivate = 23;
+
+// // Now, do you remember what also creates a scope in ES6?
+// // And that's right.
+// // Variables declared with let or const create
+// // their own scope inside a block.
+// // And we learned that
+// // in the behind the scenes section, remember?
+// // So when we create a block, like this,
+// // and declare is private in there.
+// // Then the outside can still not access is private.
+// // So let's comment out this one,
+// // and paste it here.
+// // And once again,
+// // we cannot access this variable.
+// // while on the other hand,
+// // this one here,
+// // would of course, be accessible.
+// // And so again that's what we learned,
+// // in one of the previous sections.
+// // So that's because this one here was declared with var,
+// // and therefore it does completely ignore
+// // this block here essentially.
+// // And this is the reason why now
+// // in modern JavaScript.
+// //
+// {
+//   const isPrivate = 23;
+//   var notPrivate = 46;
+// }
+
+// // console.log(isPrivate);
+// console.log(notPrivate);
+
+// // Immediately Invoked Function Expressions are not
+// // that used anymore.
+// // Because if all we want
+// // is to create a new scope for data privacy.
+// // All we need to do,
+// // is to just create a block like this, right?
+// // There's no need to creating a function
+// // to create a new scope.
+// // Unless of course,
+// // we want to use var for our variables.
+// // But we already know,
+// // we probably shouldn't do that. Right?
+// // Now on the other hand,
+// // if what you really need,
+// // is to execute a function just once, then the IIFE.
+// // So the Immediately Invoked Function Expression pattern
+// // is still the way to go.
+// // Even now with modern JavaScript.
+// // And we will actually see a great use case a bit later
+// // of doing an IIFE.
+
+///////////////////////////////////////////////////////////////////////
+// Closures
+///////////////////////////////////////////////////////////////////////
+
+// There is an almost mystical feature
+// of Java script functions
+// that many developers fail to fully understand.
+// And what I'm talking about is something called closures.
+// So when I asked my students,
+// what's the hardest JavaScript concept to understand,
+// then many people say that it's closures.
+// However, I believe that with the right explanation,
+// it's actually not that hard,
+// especially when you already understood everything
+// that you learned before in this course,
+// such as execution context,
+// the call stack, and the sculpt chain,
+// because closures kind of bring all of these concepts
+// together in a beautiful, almost magical way.
+
+// And I'm calling this function here,
+// secure booking because this passengerCount variable
+// cannot be manipulated and accessed from the outside.
+const secureBooking = function () {
+  let passengerCount = 0;
+
+  return function () {
+    passengerCount++;
+    console.log(`${passengerCount} passengers`);
+  };
 };
-runOnce();
+// And it is this function that will create the closure.
+// Now, the first thing that I need to tell you about closures
+// is that a closure is not a feature that we explicitly use.
+// So we don't create closures manually,
+// like we create a new array or a new function.
+// So a closure simply happens automatically
+// in certain situations, we just need
+// to recognize those situations.
 
-// Now, if we try to run this,
-// we will get an error for now.
-// So it says function statements require a function name.
-// And that's because
-// of course JavaScript here expects a function statement.
-// Because we simply started this line of code here
-// with the function keyword.
-// However, we can still trick JavaScript
-// into thinking that this is just an expression.
-// And we do that by simply wrapping all
-// of this into parentheses.
-// And so now
-// we basically transformed the statement that we had before
-// into an expression.
-// And so now if we save this,
-// we get no error.
-// But also this function didn't execute yet, right?
+// And so as we call secure booking,
+// it will return exactly this function
+// and it will then be stored inside this Booker.
+// And so this here is gonna be now a function as well, right?
+const booker = secureBooking();
 
-// We never called it.
-// So we know that this here is the function.
-// And so, we can then immediately call it.
-// And so with this,
-// we will get now this text here locked
-// to the console, to string.
-// And indeed here it is, alright?
-// So again this here,
-// is really just the function value.
-// So it's just a function expression.
-// And then immediately, we call it here.
-// And so this is why this pattern here,
-// is called the Immediately Invoked Function Expression.
-// Or IIFE for short.
+//see lecture pdf
 
-// IIFE
-(function () {
-  console.log('This will never run again');
-  const isPrivate = 23;
-})();
+booker();
+booker();
+booker();
 
-// IIFE - uing arrow function
+// But now if we think about this,
+// then how is this even possible?
+// How can the Booker function update
+// this passengerCount variable that's defined
+// in a secure booking function
+// that actually has already finished executing.
 
-// And the same would of course,
-// also work for an arrow function.
-// So let's just copy this.
-// This will also never run again.
-// So if we try to call it like this,
-// then it would not work.
-// And so,
-// we actually don't get an error.
-// But also nothing happens.
-// So we first need to wrap this into parentheses.
-// And then as we called it.
-// Then here it is.
-// Okay, so two ways of writing
-// an Immediately Invoked Function Expression.
-(() => console.log('This will never run again'))();
+// And so, as I just said,
+// this function has already finished its execution.
+// It is gone.
+// So its execution context is no longer on the stack,
+// as we just saw in the slide,
+// but still this inner function here,
+// which is the Booker function,
+// is still able to access the passengerCount variable
+// that's inside of the Booker function
+// that should no longer exist.
+// And maybe you can guess that what makes this possible
 
-// But you might be wondering,
-// why was this pattern actually invented?
-// Well, we already know that functions create scopes, right?
-// And what's important here
-// is that one scope does not have access
-// to variables from an inner scope, right?
-// For example, right here in this global scope.
-// We do not have access to any variables that
-// are defined in the scope
-// of any of these functions here, right?
+// is a closure, but before I explain
+// exactly how the closure works,
+// I want you to appreciate once more,
+// how strange this actually is.
+// So again, this Booker function here
+// is simply a function that exists
+// out here in the global environment
+// or in the global scope, right?
 
-// So for example,
-// let's add a variable here.
-// Let's say, is private = 23.
-// And then as we tried to access it out here.
-// You already know that it's not going to work, right?
-// And that's because the scope chain
-// only works the other way around.
-// So the inner scope would have access
-// to anything defined outside,
-// here in the global scope.
-// But the other way around,
-// the global scope does not have access to anything,
-// that is inside of a scope.
+// And the environment in which the function was created.
+// So this year basically, this environment
+// is no longer active.
+// It is in fact gone.
+// But still the Booker function somehow continues
+// to have access to the variables
+// that were present at the time that the function was created.
+// And in particular, this passengerCount variable here.
+// And so that's exactly what the closure does.
 
-// const isPrivate = 23;
+// So we can say that a closure makes a function
+// remember all the variables that existed
+// at the function's birthplace essentially, right?
+// So we can imagine the secure booking
+// as being the birthplace of this function.
+// So of the Booker function, essentially.
+// And so this function remembers everything at its birthplace,
+// by the time it was created.
+// And this cannot simply be explained
+// with the scope chain alone.
+// So we need to also understand the closure.
 
-// Now, do you remember what also creates a scope in ES6?
-// And that's right.
-// Variables declared with let or const create
-// their own scope inside a block.
-// And we learned that
-// in the behind the scenes section, remember?
-// So when we create a block, like this,
-// and declare is private in there.
-// Then the outside can still not access is private.
-// So let's comment out this one,
-// and paste it here.
-// And once again,
-// we cannot access this variable.
-// while on the other hand,
-// this one here,
-// would of course, be accessible.
-// And so again that's what we learned,
-// in one of the previous sections.
-// So that's because this one here was declared with var,
-// and therefore it does completely ignore
-// this block here essentially.
-// And this is the reason why now
-// in modern JavaScript.
-//
-{
-  const isPrivate = 23;
-  var notPrivate = 46;
-}
+//see lecture pdf
 
-// console.log(isPrivate);
-console.log(notPrivate);
+// the secret of the closure
+// and the secret is basically this.
+// Any function always has access to the variable environment
+// of the execution context in which the function was created.
+// Now, in the case of Booker, this function was created.
+// It was born in the execution context of secure booking,
+// which was popped off the stack previously, remember?
+// So, therefore the Booker function
+// will get access to this variable environment,
+// which contains the passengerCount variable.
+// And this is how the function will be able to read
+// and manipulate the passengerCount variable.
+// And so it's this connection that we call closure.
 
-// Immediately Invoked Function Expressions are not
-// that used anymore.
-// Because if all we want
-// is to create a new scope for data privacy.
-// All we need to do,
-// is to just create a block like this, right?
-// There's no need to creating a function
-// to create a new scope.
-// Unless of course,
-// we want to use var for our variables.
-// But we already know,
-// we probably shouldn't do that. Right?
-// Now on the other hand,
-// if what you really need,
-// is to execute a function just once, then the IIFE.
-// So the Immediately Invoked Function Expression pattern
-// is still the way to go.
-// Even now with modern JavaScript.
-// And we will actually see a great use case a bit later
-// of doing an IIFE.
+// And this last part is really important.
+// The closure is then basically this variable environment
+// attached to the function,
+// exactly as it was at the time and place
+// that the function was created.
+// And this probably still sounds confusing, but don't worry.
+// I have some more familiar analogies in the next slide.
+
+// For now, we are just trying to understand the mechanism
+// behind the closure, so how it all works behind the scenes.
+// So what matters the most here is that the Booker function
+// has access to the passengerCount variable
+// because it's basically defined in the scope
+// in which the Booker function was actually created.
+// So in a sense, the scope chain is actually preserved
+// through the closure, even when a scope
+// has already been destroyed
+// because its execution context is gone.
+// This means that even though the execution context
+// has actually been destroyed,
+// the variable environment somehow keeps living
+// somewhere in the engine.
+
+// To make it a bit more digestible,
+// we can also say that thanks to the closure,
+// a function does not lose connection to variables
+// that existed at the function's birthplace.
+// That's a bit more intuitive, right?
+// But anyway, let's see what happens now
+// with execution of the Booker function.
+// So the function attempts to increase
+// the passengerCount variable.
+// However, this variable is not in the current scope.
+// And so JavaScript will immediately look into the closure
+// and see if it can find the variable there.
+// And it does this even before looking at the scope chain.
+// For example, if there was a global passengerCount variable
+// set to 10, it would still first use the one in the closure.
+// So the closure basically has priority over the scope chain.
+// And so after running this function,
+// the passengerCount becomes one.
+// This message is logged.
+// And then the execution context is popped off the stack.
+// Then execution moves to the next line.
+// We get a new execution context and a closure is still there,
+// still attached to the function and the value is still one.
+// And so now this function executes,
+// increasing the passengerCount to two
+// and logging a message again.
+// Okay, and that's what closures are
+// and how they work behind the scenes.
+
+// And I know that this is all quite complex.
+// So let me give you a couple different definitions
+// of closure now, some more formal ones
+// and some more intuitive and maybe easier to grasp.
+
+// see pdf lecture ablout closure summary
+
+console.dir(booker);
