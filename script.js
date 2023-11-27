@@ -1329,177 +1329,269 @@
 // Closures
 ///////////////////////////////////////////////////////////////////////
 
-// There is an almost mystical feature
-// of Java script functions
-// that many developers fail to fully understand.
-// And what I'm talking about is something called closures.
-// So when I asked my students,
-// what's the hardest JavaScript concept to understand,
-// then many people say that it's closures.
-// However, I believe that with the right explanation,
-// it's actually not that hard,
-// especially when you already understood everything
-// that you learned before in this course,
-// such as execution context,
-// the call stack, and the sculpt chain,
-// because closures kind of bring all of these concepts
-// together in a beautiful, almost magical way.
+// // There is an almost mystical feature
+// // of Java script functions
+// // that many developers fail to fully understand.
+// // And what I'm talking about is something called closures.
+// // So when I asked my students,
+// // what's the hardest JavaScript concept to understand,
+// // then many people say that it's closures.
+// // However, I believe that with the right explanation,
+// // it's actually not that hard,
+// // especially when you already understood everything
+// // that you learned before in this course,
+// // such as execution context,
+// // the call stack, and the sculpt chain,
+// // because closures kind of bring all of these concepts
+// // together in a beautiful, almost magical way.
 
-// And I'm calling this function here,
-// secure booking because this passengerCount variable
-// cannot be manipulated and accessed from the outside.
-const secureBooking = function () {
-  let passengerCount = 0;
+// // And I'm calling this function here,
+// // secure booking because this passengerCount variable
+// // cannot be manipulated and accessed from the outside.
+// const secureBooking = function () {
+//   let passengerCount = 0;
 
-  return function () {
-    passengerCount++;
-    console.log(`${passengerCount} passengers`);
+//   return function () {
+//     passengerCount++;
+//     console.log(`${passengerCount} passengers`);
+//   };
+// };
+// // And it is this function that will create the closure.
+// // Now, the first thing that I need to tell you about closures
+// // is that a closure is not a feature that we explicitly use.
+// // So we don't create closures manually,
+// // like we create a new array or a new function.
+// // So a closure simply happens automatically
+// // in certain situations, we just need
+// // to recognize those situations.
+
+// // And so as we call secure booking,
+// // it will return exactly this function
+// // and it will then be stored inside this Booker.
+// // And so this here is gonna be now a function as well, right?
+// const booker = secureBooking();
+
+// //see lecture pdf
+
+// booker();
+// booker();
+// booker();
+
+// // But now if we think about this,
+// // then how is this even possible?
+// // How can the Booker function update
+// // this passengerCount variable that's defined
+// // in a secure booking function
+// // that actually has already finished executing.
+
+// // And so, as I just said,
+// // this function has already finished its execution.
+// // It is gone.
+// // So its execution context is no longer on the stack,
+// // as we just saw in the slide,
+// // but still this inner function here,
+// // which is the Booker function,
+// // is still able to access the passengerCount variable
+// // that's inside of the Booker function
+// // that should no longer exist.
+// // And maybe you can guess that what makes this possible
+
+// // is a closure, but before I explain
+// // exactly how the closure works,
+// // I want you to appreciate once more,
+// // how strange this actually is.
+// // So again, this Booker function here
+// // is simply a function that exists
+// // out here in the global environment
+// // or in the global scope, right?
+
+// // And the environment in which the function was created.
+// // So this year basically, this environment
+// // is no longer active.
+// // It is in fact gone.
+// // But still the Booker function somehow continues
+// // to have access to the variables
+// // that were present at the time that the function was created.
+// // And in particular, this passengerCount variable here.
+// // And so that's exactly what the closure does.
+
+// // So we can say that a closure makes a function
+// // remember all the variables that existed
+// // at the function's birthplace essentially, right?
+// // So we can imagine the secure booking
+// // as being the birthplace of this function.
+// // So of the Booker function, essentially.
+// // And so this function remembers everything at its birthplace,
+// // by the time it was created.
+// // And this cannot simply be explained
+// // with the scope chain alone.
+// // So we need to also understand the closure.
+
+// //see lecture pdf
+
+// // the secret of the closure
+// // and the secret is basically this.
+// // Any function always has access to the variable environment
+// // of the execution context in which the function was created.
+// // Now, in the case of Booker, this function was created.
+// // It was born in the execution context of secure booking,
+// // which was popped off the stack previously, remember?
+// // So, therefore the Booker function
+// // will get access to this variable environment,
+// // which contains the passengerCount variable.
+// // And this is how the function will be able to read
+// // and manipulate the passengerCount variable.
+// // And so it's this connection that we call closure.
+
+// // And this last part is really important.
+// // The closure is then basically this variable environment
+// // attached to the function,
+// // exactly as it was at the time and place
+// // that the function was created.
+// // And this probably still sounds confusing, but don't worry.
+// // I have some more familiar analogies in the next slide.
+
+// // For now, we are just trying to understand the mechanism
+// // behind the closure, so how it all works behind the scenes.
+// // So what matters the most here is that the Booker function
+// // has access to the passengerCount variable
+// // because it's basically defined in the scope
+// // in which the Booker function was actually created.
+// // So in a sense, the scope chain is actually preserved
+// // through the closure, even when a scope
+// // has already been destroyed
+// // because its execution context is gone.
+// // This means that even though the execution context
+// // has actually been destroyed,
+// // the variable environment somehow keeps living
+// // somewhere in the engine.
+
+// // To make it a bit more digestible,
+// // we can also say that thanks to the closure,
+// // a function does not lose connection to variables
+// // that existed at the function's birthplace.
+// // That's a bit more intuitive, right?
+// // But anyway, let's see what happens now
+// // with execution of the Booker function.
+// // So the function attempts to increase
+// // the passengerCount variable.
+// // However, this variable is not in the current scope.
+// // And so JavaScript will immediately look into the closure
+// // and see if it can find the variable there.
+// // And it does this even before looking at the scope chain.
+// // For example, if there was a global passengerCount variable
+// // set to 10, it would still first use the one in the closure.
+// // So the closure basically has priority over the scope chain.
+// // And so after running this function,
+// // the passengerCount becomes one.
+// // This message is logged.
+// // And then the execution context is popped off the stack.
+// // Then execution moves to the next line.
+// // We get a new execution context and a closure is still there,
+// // still attached to the function and the value is still one.
+// // And so now this function executes,
+// // increasing the passengerCount to two
+// // and logging a message again.
+// // Okay, and that's what closures are
+// // and how they work behind the scenes.
+
+// // And I know that this is all quite complex.
+// // So let me give you a couple different definitions
+// // of closure now, some more formal ones
+// // and some more intuitive and maybe easier to grasp.
+
+// // see pdf lecture ablout closure summary
+
+// console.dir(booker);
+
+//////////////////////////////////////////////////////////
+// More Closure Examples
+//////////////////////////////////////////////////////////
+// Let's now create two more situations
+// in which closures are gonna appear.
+// So that you can start identifying closures
+// in your own code in the future.
+// And both of these examples are gonna demonstrate
+// that we don't need to return if function
+// from another function in order to create a closure.
+
+// example 1
+let f;
+
+const g = function () {
+  const a = 23;
+  f = function () {
+    console.log(a * 2);
   };
 };
-// And it is this function that will create the closure.
-// Now, the first thing that I need to tell you about closures
-// is that a closure is not a feature that we explicitly use.
-// So we don't create closures manually,
-// like we create a new array or a new function.
-// So a closure simply happens automatically
-// in certain situations, we just need
-// to recognize those situations.
 
-// And so as we call secure booking,
-// it will return exactly this function
-// and it will then be stored inside this Booker.
-// And so this here is gonna be now a function as well, right?
-const booker = secureBooking();
+const h = function () {
+  const b = 777;
+  f = function () {
+    console.log(b * 2);
+  };
+};
 
-//see lecture pdf
+g();
+f();
+console.dir(f);
 
-booker();
-booker();
-booker();
+//RE-assign f function
+h();
+f();
 
-// But now if we think about this,
-// then how is this even possible?
-// How can the Booker function update
-// this passengerCount variable that's defined
-// in a secure booking function
-// that actually has already finished executing.
+console.dir(f);
 
-// And so, as I just said,
-// this function has already finished its execution.
-// It is gone.
-// So its execution context is no longer on the stack,
-// as we just saw in the slide,
-// but still this inner function here,
-// which is the Booker function,
-// is still able to access the passengerCount variable
-// that's inside of the Booker function
-// that should no longer exist.
-// And maybe you can guess that what makes this possible
+// Example 2
 
-// is a closure, but before I explain
-// exactly how the closure works,
-// I want you to appreciate once more,
-// how strange this actually is.
-// So again, this Booker function here
-// is simply a function that exists
-// out here in the global environment
-// or in the global scope, right?
+const boardPassengers = function (n, wait) {
+  const perGroup = n / 3;
 
-// And the environment in which the function was created.
-// So this year basically, this environment
-// is no longer active.
-// It is in fact gone.
-// But still the Booker function somehow continues
-// to have access to the variables
-// that were present at the time that the function was created.
-// And in particular, this passengerCount variable here.
-// And so that's exactly what the closure does.
+  setTimeout(function () {
+    console.log(`We are now boardng all ${n} passengers`);
+    console.log(`There are 3 groups, each with ${perGroup} passengers`);
+  }, wait * 1000); //1000 = 1 SECOND
 
-// So we can say that a closure makes a function
-// remember all the variables that existed
-// at the function's birthplace essentially, right?
-// So we can imagine the secure booking
-// as being the birthplace of this function.
-// So of the Booker function, essentially.
-// And so this function remembers everything at its birthplace,
-// by the time it was created.
-// And this cannot simply be explained
-// with the scope chain alone.
-// So we need to also understand the closure.
+  console.log(`Will start boarding in ${wait} seconds`);
+};
 
-//see lecture pdf
+const perGroup = 1000;
+boardPassengers(180, 3);
 
-// the secret of the closure
-// and the secret is basically this.
-// Any function always has access to the variable environment
-// of the execution context in which the function was created.
-// Now, in the case of Booker, this function was created.
-// It was born in the execution context of secure booking,
-// which was popped off the stack previously, remember?
-// So, therefore the Booker function
-// will get access to this variable environment,
-// which contains the passengerCount variable.
-// And this is how the function will be able to read
-// and manipulate the passengerCount variable.
-// And so it's this connection that we call closure.
-
-// And this last part is really important.
-// The closure is then basically this variable environment
-// attached to the function,
-// exactly as it was at the time and place
-// that the function was created.
-// And this probably still sounds confusing, but don't worry.
-// I have some more familiar analogies in the next slide.
-
-// For now, we are just trying to understand the mechanism
-// behind the closure, so how it all works behind the scenes.
-// So what matters the most here is that the Booker function
-// has access to the passengerCount variable
-// because it's basically defined in the scope
-// in which the Booker function was actually created.
-// So in a sense, the scope chain is actually preserved
-// through the closure, even when a scope
-// has already been destroyed
-// because its execution context is gone.
-// This means that even though the execution context
-// has actually been destroyed,
-// the variable environment somehow keeps living
-// somewhere in the engine.
-
-// To make it a bit more digestible,
-// we can also say that thanks to the closure,
-// a function does not lose connection to variables
-// that existed at the function's birthplace.
-// That's a bit more intuitive, right?
-// But anyway, let's see what happens now
-// with execution of the Booker function.
-// So the function attempts to increase
-// the passengerCount variable.
-// However, this variable is not in the current scope.
-// And so JavaScript will immediately look into the closure
-// and see if it can find the variable there.
-// And it does this even before looking at the scope chain.
-// For example, if there was a global passengerCount variable
-// set to 10, it would still first use the one in the closure.
-// So the closure basically has priority over the scope chain.
-// And so after running this function,
-// the passengerCount becomes one.
-// This message is logged.
-// And then the execution context is popped off the stack.
-// Then execution moves to the next line.
-// We get a new execution context and a closure is still there,
-// still attached to the function and the value is still one.
-// And so now this function executes,
-// increasing the passengerCount to two
-// and logging a message again.
-// Okay, and that's what closures are
-// and how they work behind the scenes.
-
-// And I know that this is all quite complex.
-// So let me give you a couple different definitions
-// of closure now, some more formal ones
-// and some more intuitive and maybe easier to grasp.
-
-// see pdf lecture ablout closure summary
-
-console.dir(booker);
+// And to finish, let's now also prove
+// that the closure does in fact have priority
+// over the sculpt chain.
+// So here in the global scope,
+// I'm also gonna create a variable called perGroup equals
+// and then just some value here.
+// And so if the scope chain had priority over the closure,
+// then this callback function here
+// would indeed use this variable here
+// this global variable
+// because we can imagine this function here
+// basically being executed in the global scope, okay.
+// So if it wasn't for the closure it would use this.
+// So let me actually demonstrate that to you.
+// So if I remove this variable,
+// then it will be able to use the perGroup
+// and data is here outside.
+// So indeed now we get 1,000
+// but then as we put it back here
+// then the callback function will close over this variable.
+// So it will close over
+// the entire variable environment in fact.
+// And so therefore it will then use this year first, right.
+// And it did.
+// So in fact, a disclosure even has priority
+// over the sculpt chain.
+// Okay, and with this,
+// we finished these two lectures about closures
+// and they hope that after this one,
+// you are now a little bit better able to identify closures
+// as they happen in your code or even here in my code
+// throughout the codes
+// because we will see some closures happening
+// some more times in the future.
+// Now all there's left to do is the coding challenge
+// in the next video where you will be thinking
+// about closures one more time.
