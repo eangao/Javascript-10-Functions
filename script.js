@@ -1024,138 +1024,303 @@
 // Coding Challenge #1
 ///////////////////////////////////////////////////////////////////////
 
-// Let's build a simple poll app!
-// A poll has a question, an array of options from which people can choose, and an
-// array with the number of replies for each option. This data is stored in the starter
-// 'poll' object below.
-// Your tasks:
+// // Let's build a simple poll app!
+// // A poll has a question, an array of options from which people can choose, and an
+// // array with the number of replies for each option. This data is stored in the starter
+// // 'poll' object below.
+// // Your tasks:
 
-// 1. Create a method called 'registerNewAnswer' on the 'poll' object. The
-// method does 2 things:
+// // 1. Create a method called 'registerNewAnswer' on the 'poll' object. The
+// // method does 2 things:
 
-// 1.1. Display a prompt window for the user to input the number of the
-// selected option. The prompt should look like this:
-// What is your favourite programming language?
-// 0: JavaScript
-// 1: Python
-// 2: Rust
-// 3: C++
-// (Write option number)
+// // 1.1. Display a prompt window for the user to input the number of the
+// // selected option. The prompt should look like this:
+// // What is your favourite programming language?
+// // 0: JavaScript
+// // 1: Python
+// // 2: Rust
+// // 3: C++
+// // (Write option number)
 
-// 1.2. Based on the input number, update the 'answers' array property. For
-// example, if the option is 3, increase the value at position 3 of the array by
-// 1. Make sure to check if the input is a number and if the number makes
-// sense (e.g. answer 52 wouldn't make sense, right?)
+// // 1.2. Based on the input number, update the 'answers' array property. For
+// // example, if the option is 3, increase the value at position 3 of the array by
+// // 1. Make sure to check if the input is a number and if the number makes
+// // sense (e.g. answer 52 wouldn't make sense, right?)
 
-// 2. Call this method whenever the user clicks the "Answer poll" button.
+// // 2. Call this method whenever the user clicks the "Answer poll" button.
 
-// 3. Create a method 'displayResults' which displays the poll results. The
-// method takes a string as an input (called 'type'), which can be either 'string'
-// or 'array'. If type is 'array', simply display the results array as it is, using
-// console.log(). This should be the default option. If type is 'string', display a
-// string like "Poll results are 13, 2, 4, 1".
+// // 3. Create a method 'displayResults' which displays the poll results. The
+// // method takes a string as an input (called 'type'), which can be either 'string'
+// // or 'array'. If type is 'array', simply display the results array as it is, using
+// // console.log(). This should be the default option. If type is 'string', display a
+// // string like "Poll results are 13, 2, 4, 1".
 
-// 4. Run the 'displayResults' method at the end of each
-// 'registerNewAnswer' method call.
+// // 4. Run the 'displayResults' method at the end of each
+// // 'registerNewAnswer' method call.
 
-// 5. Bonus: Use the 'displayResults' method to display the 2 arrays in the test
-// data. Use both the 'array' and the 'string' option. Do not put the arrays in the poll
-// object! So what should the this keyword look like in this situation?
+// // 5. Bonus: Use the 'displayResults' method to display the 2 arrays in the test
+// // data. Use both the 'array' and the 'string' option. Do not put the arrays in the poll
+// // object! So what should the this keyword look like in this situation?
 
-// Test data for bonus:
-// § Data 1: [5, 2, 3]
-// § Data 2: [1, 5, 3, 9, 6, 1]
+// // Test data for bonus:
+// // § Data 1: [5, 2, 3]
+// // § Data 2: [1, 5, 3, 9, 6, 1]
 
-// Hints: Use many of the tools you learned about in this and the last section �
-// GOOD LUCK �
+// // Hints: Use many of the tools you learned about in this and the last section �
+// // GOOD LUCK �
 
-const poll = {
-  question: 'What is your favourite programming language?',
-  options: ['0: JavaScript', '1: Python', '2: Rust', '3: C++'],
-  // This generates [0, 0, 0, 0]. More in the next section!
-  answers: new Array(4).fill(0),
+// const poll = {
+//   question: 'What is your favourite programming language?',
+//   options: ['0: JavaScript', '1: Python', '2: Rust', '3: C++'],
+//   // This generates [0, 0, 0, 0]. More in the next section!
+//   answers: new Array(4).fill(0),
 
-  regsiterNewAnswer() {
-    //Get answer
-    const answer = Number(
-      prompt(
-        `${this.question}\n${this.options.join('\n')}\n(Write option number)`
-      )
-    );
+//   regsiterNewAnswer() {
+//     //Get answer
+//     const answer = Number(
+//       prompt(
+//         `${this.question}\n${this.options.join('\n')}\n(Write option number)`
+//       )
+//     );
 
-    console.log(answer);
+//     console.log(answer);
 
-    //register answer
+//     //register answer
 
-    //     But if either one of these conditions here is false,
-    // then the end operator will short circuit,
-    // and this part here is not executed.
-    // So this is a nice use case for short circuiting,
-    // because the code that we want to execute,
-    // is just one simple line of code.
-    typeof answer === 'number' &&
-      answer < this.answers.length &&
-      this.answers[answer]++;
+//     //     But if either one of these conditions here is false,
+//     // then the end operator will short circuit,
+//     // and this part here is not executed.
+//     // So this is a nice use case for short circuiting,
+//     // because the code that we want to execute,
+//     // is just one simple line of code.
+//     typeof answer === 'number' &&
+//       answer < this.answers.length &&
+//       this.answers[answer]++;
 
-    this.displayResults();
-    this.displayResults('string');
-  },
+//     this.displayResults();
+//     this.displayResults('string');
+//   },
 
-  //   And remember, it has the default set to array.
-  // And so here, we can use the ES6 default parameters,
-  // using this equal sign.
-  displayResults(type = 'array') {
-    if (type === 'array') {
-      console.log(this.answers);
-    } else if (type === 'string') {
-      // Poll results are 13, 2, 4, 1
-      console.log(`Poll results are ${this.answers.join(', ')}`);
-    }
-  },
+//   //   And remember, it has the default set to array.
+//   // And so here, we can use the ES6 default parameters,
+//   // using this equal sign.
+//   displayResults(type = 'array') {
+//     if (type === 'array') {
+//       console.log(this.answers);
+//     } else if (type === 'string') {
+//       // Poll results are 13, 2, 4, 1
+//       console.log(`Poll results are ${this.answers.join(', ')}`);
+//     }
+//   },
+// };
+
+// // poll.regsiterNewAnswer();
+
+// document
+//   .querySelector('.poll')
+
+//   // script.js:1082 Uncaught TypeError: Cannot read properties of undefined (reading 'join')
+//   // .addEventListener('click', poll.regsiterNewAnswer);
+
+//   //   And there is an error.
+//   // And that's because we're trying to read property join,
+//   // of undefined, right here.
+//   // And so the problem here is, as you might have guessed,
+//   // because we talked about this before,
+//   // is that the disk keyword right now, points to this element.
+//   // So to this poll button here.
+//   // And so again, there is because in an event handler function,
+//   // such as this one here,
+//   // that this keyword will always point to the element,
+//   // to which it is attached.
+//   // And so right now, there is this button.
+//   // So to fix this, we need to bind the disk keyword.
+//   // And in this case, we need to set it to the poll object.
+//   // And so then, in this function here,
+//   // which is the result of the bind method,
+//   // so in this new function,
+//   // the disk keyword will then point to the poll object.
+
+//   .addEventListener('click', poll.regsiterNewAnswer.bind(poll));
+
+// //   Well, we will have to use the call method,
+// // because we will need a new disk keyword, right?
+// // Because display results uses this dot answers.
+// // Okay, so the answers come from the disk keyword.
+// // And so if we want to have a different disk keyword,
+// // then we need to use call.
+// poll.displayResults.call({ answers: [5, 2, 3] }, 'string');
+// poll.displayResults.call({ answers: [1, 5, 3, 9, 6, 1] });
+
+// // [5, 2, 3]
+// // [1, 5, 3, 9, 6, 1]
+// // Now, what we did here, it's not really a real scenario,
+// // but it's still good for us to use these concepts,
+// // in some different ways,
+// // to really get used to how all of these concepts,
+// // work together.
+
+////////////////////////////////////////////////////////////////////////
+// Immediately Invoked Function Expressions (IIFE)
+////////////////////////////////////////////////////////////////////////
+
+// ur next topic is something called,
+// Immediately Invoked Function Expressions.
+// So let's take a look at what they are.
+// So sometimes in JavaScript,
+// we need a function that is only executed once.
+// And then never again.
+// So basically a function
+// that disappears right after it's called once.
+// And this might not appear
+// to make much sense right now.
+// But we actually need this technique later.
+
+// For example, with something called async/await.
+// So how could we do that?
+// Well, we could simply create a function.
+// And then only execute it once.
+// So, run, once, function.
+// This will never run again.
+
+const runOnce = function () {
+  console.log('This will never run again');
 };
+runOnce();
 
-// poll.regsiterNewAnswer();
+// Now, if we try to run this,
+// we will get an error for now.
+// So it says function statements require a function name.
+// And that's because
+// of course JavaScript here expects a function statement.
+// Because we simply started this line of code here
+// with the function keyword.
+// However, we can still trick JavaScript
+// into thinking that this is just an expression.
+// And we do that by simply wrapping all
+// of this into parentheses.
+// And so now
+// we basically transformed the statement that we had before
+// into an expression.
+// And so now if we save this,
+// we get no error.
+// But also this function didn't execute yet, right?
 
-document
-  .querySelector('.poll')
+// We never called it.
+// So we know that this here is the function.
+// And so, we can then immediately call it.
+// And so with this,
+// we will get now this text here locked
+// to the console, to string.
+// And indeed here it is, alright?
+// So again this here,
+// is really just the function value.
+// So it's just a function expression.
+// And then immediately, we call it here.
+// And so this is why this pattern here,
+// is called the Immediately Invoked Function Expression.
+// Or IIFE for short.
 
-  // script.js:1082 Uncaught TypeError: Cannot read properties of undefined (reading 'join')
-  // .addEventListener('click', poll.regsiterNewAnswer);
+// IIFE
+(function () {
+  console.log('This will never run again');
+  const isPrivate = 23;
+})();
 
-  //   And there is an error.
-  // And that's because we're trying to read property join,
-  // of undefined, right here.
-  // And so the problem here is, as you might have guessed,
-  // because we talked about this before,
-  // is that the disk keyword right now, points to this element.
-  // So to this poll button here.
-  // And so again, there is because in an event handler function,
-  // such as this one here,
-  // that this keyword will always point to the element,
-  // to which it is attached.
-  // And so right now, there is this button.
-  // So to fix this, we need to bind the disk keyword.
-  // And in this case, we need to set it to the poll object.
-  // And so then, in this function here,
-  // which is the result of the bind method,
-  // so in this new function,
-  // the disk keyword will then point to the poll object.
+// IIFE - uing arrow function
 
-  .addEventListener('click', poll.regsiterNewAnswer.bind(poll));
+// And the same would of course,
+// also work for an arrow function.
+// So let's just copy this.
+// This will also never run again.
+// So if we try to call it like this,
+// then it would not work.
+// And so,
+// we actually don't get an error.
+// But also nothing happens.
+// So we first need to wrap this into parentheses.
+// And then as we called it.
+// Then here it is.
+// Okay, so two ways of writing
+// an Immediately Invoked Function Expression.
+(() => console.log('This will never run again'))();
 
-//   Well, we will have to use the call method,
-// because we will need a new disk keyword, right?
-// Because display results uses this dot answers.
-// Okay, so the answers come from the disk keyword.
-// And so if we want to have a different disk keyword,
-// then we need to use call.
-poll.displayResults.call({ answers: [5, 2, 3] }, 'string');
-poll.displayResults.call({ answers: [1, 5, 3, 9, 6, 1] });
+// But you might be wondering,
+// why was this pattern actually invented?
+// Well, we already know that functions create scopes, right?
+// And what's important here
+// is that one scope does not have access
+// to variables from an inner scope, right?
+// For example, right here in this global scope.
+// We do not have access to any variables that
+// are defined in the scope
+// of any of these functions here, right?
 
-// [5, 2, 3]
-// [1, 5, 3, 9, 6, 1]
-// Now, what we did here, it's not really a real scenario,
-// but it's still good for us to use these concepts,
-// in some different ways,
-// to really get used to how all of these concepts,
-// work together.
+// So for example,
+// let's add a variable here.
+// Let's say, is private = 23.
+// And then as we tried to access it out here.
+// You already know that it's not going to work, right?
+// And that's because the scope chain
+// only works the other way around.
+// So the inner scope would have access
+// to anything defined outside,
+// here in the global scope.
+// But the other way around,
+// the global scope does not have access to anything,
+// that is inside of a scope.
+
+// const isPrivate = 23;
+
+// Now, do you remember what also creates a scope in ES6?
+// And that's right.
+// Variables declared with let or const create
+// their own scope inside a block.
+// And we learned that
+// in the behind the scenes section, remember?
+// So when we create a block, like this,
+// and declare is private in there.
+// Then the outside can still not access is private.
+// So let's comment out this one,
+// and paste it here.
+// And once again,
+// we cannot access this variable.
+// while on the other hand,
+// this one here,
+// would of course, be accessible.
+// And so again that's what we learned,
+// in one of the previous sections.
+// So that's because this one here was declared with var,
+// and therefore it does completely ignore
+// this block here essentially.
+// And this is the reason why now
+// in modern JavaScript.
+//
+{
+  const isPrivate = 23;
+  var notPrivate = 46;
+}
+
+// console.log(isPrivate);
+console.log(notPrivate);
+
+// Immediately Invoked Function Expressions are not
+// that used anymore.
+// Because if all we want
+// is to create a new scope for data privacy.
+// All we need to do,
+// is to just create a block like this, right?
+// There's no need to creating a function
+// to create a new scope.
+// Unless of course,
+// we want to use var for our variables.
+// But we already know,
+// we probably shouldn't do that. Right?
+// Now on the other hand,
+// if what you really need,
+// is to execute a function just once, then the IIFE.
+// So the Immediately Invoked Function Expression pattern
+// is still the way to go.
+// Even now with modern JavaScript.
+// And we will actually see a great use case a bit later
+// of doing an IIFE.
