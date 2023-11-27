@@ -1507,91 +1507,172 @@
 //////////////////////////////////////////////////////////
 // More Closure Examples
 //////////////////////////////////////////////////////////
-// Let's now create two more situations
-// in which closures are gonna appear.
-// So that you can start identifying closures
-// in your own code in the future.
-// And both of these examples are gonna demonstrate
-// that we don't need to return if function
-// from another function in order to create a closure.
+// // Let's now create two more situations
+// // in which closures are gonna appear.
+// // So that you can start identifying closures
+// // in your own code in the future.
+// // And both of these examples are gonna demonstrate
+// // that we don't need to return if function
+// // from another function in order to create a closure.
 
-// example 1
-let f;
+// // example 1
+// let f;
 
-const g = function () {
-  const a = 23;
-  f = function () {
-    console.log(a * 2);
-  };
-};
+// const g = function () {
+//   const a = 23;
+//   f = function () {
+//     console.log(a * 2);
+//   };
+// };
 
-const h = function () {
-  const b = 777;
-  f = function () {
-    console.log(b * 2);
-  };
-};
+// const h = function () {
+//   const b = 777;
+//   f = function () {
+//     console.log(b * 2);
+//   };
+// };
 
-g();
-f();
-console.dir(f);
+// g();
+// f();
+// console.dir(f);
 
-//RE-assign f function
-h();
-f();
+// //RE-assign f function
+// h();
+// f();
 
-console.dir(f);
+// console.dir(f);
 
-// Example 2
+// // Example 2
 
-const boardPassengers = function (n, wait) {
-  const perGroup = n / 3;
+// const boardPassengers = function (n, wait) {
+//   const perGroup = n / 3;
 
-  setTimeout(function () {
-    console.log(`We are now boardng all ${n} passengers`);
-    console.log(`There are 3 groups, each with ${perGroup} passengers`);
-  }, wait * 1000); //1000 = 1 SECOND
+//   setTimeout(function () {
+//     console.log(`We are now boardng all ${n} passengers`);
+//     console.log(`There are 3 groups, each with ${perGroup} passengers`);
+//   }, wait * 1000); //1000 = 1 SECOND
 
-  console.log(`Will start boarding in ${wait} seconds`);
-};
+//   console.log(`Will start boarding in ${wait} seconds`);
+// };
 
-const perGroup = 1000;
-boardPassengers(180, 3);
+// const perGroup = 1000;
+// boardPassengers(180, 3);
 
-// And to finish, let's now also prove
-// that the closure does in fact have priority
-// over the sculpt chain.
-// So here in the global scope,
-// I'm also gonna create a variable called perGroup equals
-// and then just some value here.
-// And so if the scope chain had priority over the closure,
-// then this callback function here
-// would indeed use this variable here
-// this global variable
-// because we can imagine this function here
-// basically being executed in the global scope, okay.
-// So if it wasn't for the closure it would use this.
-// So let me actually demonstrate that to you.
-// So if I remove this variable,
-// then it will be able to use the perGroup
-// and data is here outside.
-// So indeed now we get 1,000
-// but then as we put it back here
-// then the callback function will close over this variable.
-// So it will close over
-// the entire variable environment in fact.
-// And so therefore it will then use this year first, right.
-// And it did.
-// So in fact, a disclosure even has priority
-// over the sculpt chain.
-// Okay, and with this,
-// we finished these two lectures about closures
-// and they hope that after this one,
-// you are now a little bit better able to identify closures
-// as they happen in your code or even here in my code
-// throughout the codes
-// because we will see some closures happening
-// some more times in the future.
-// Now all there's left to do is the coding challenge
-// in the next video where you will be thinking
-// about closures one more time.
+// // And to finish, let's now also prove
+// // that the closure does in fact have priority
+// // over the sculpt chain.
+// // So here in the global scope,
+// // I'm also gonna create a variable called perGroup equals
+// // and then just some value here.
+// // And so if the scope chain had priority over the closure,
+// // then this callback function here
+// // would indeed use this variable here
+// // this global variable
+// // because we can imagine this function here
+// // basically being executed in the global scope, okay.
+// // So if it wasn't for the closure it would use this.
+// // So let me actually demonstrate that to you.
+// // So if I remove this variable,
+// // then it will be able to use the perGroup
+// // and data is here outside.
+// // So indeed now we get 1,000
+// // but then as we put it back here
+// // then the callback function will close over this variable.
+// // So it will close over
+// // the entire variable environment in fact.
+// // And so therefore it will then use this year first, right.
+// // And it did.
+// // So in fact, a disclosure even has priority
+// // over the sculpt chain.
+// // Okay, and with this,
+// // we finished these two lectures about closures
+// // and they hope that after this one,
+// // you are now a little bit better able to identify closures
+// // as they happen in your code or even here in my code
+// // throughout the codes
+// // because we will see some closures happening
+// // some more times in the future.
+// // Now all there's left to do is the coding challenge
+// // in the next video where you will be thinking
+// // about closures one more time.
+
+/////////////////////////////////////////////////////////////
+// Coding Challenge #2
+/////////////////////////////////////////////////////////////
+
+// This is more of a thinking challenge than a coding challenge �
+// Your tasks:
+
+// 1. Take the IIFE below and at the end of the function, attach an event listener that
+// changes the color of the selected h1 element ('header') to blue, each time
+// the body element is clicked. Do not select the h1 element again!
+
+// 2. And now explain to yourself (or someone around you) why this worked! Take all
+// the time you need. Think about when exactly the callback function is executed,
+// and what that means for the variables involved in this example.
+
+// GOOD LUCK
+
+(function () {
+  const header = document.querySelector('h1');
+  header.style.color = 'red';
+
+  document.querySelector('body').addEventListener('click', function () {
+    header.style.color = 'blue';
+  });
+})();
+
+// So why did this work?
+// Or in other words, how does this callback function here,
+// get access to the header variable?
+// And one more time, the explanation is the closure.
+// So I hoped that you really explained basically
+// how the closure works to yourself or to someone else.
+// And so in this particular example, the closure is necessary
+// or it's useful
+
+// because by the time this callback here is executed,
+// this IIFE,
+// so this immediately invoked function expression is
+// now long gone.
+// So it has already been executed.
+// And with it, this variable here is basically gone as well.
+// Right?
+
+// So all of that is gone.
+// But still, this function here is attached
+// to the body element.
+
+// And so it's waiting for some events to happen there.
+// And when the event happens, well,
+// then this function here is of course, executed.
+// And again, even though the environment
+// in which this function here was created is already gone,
+// it is still able to access the variables
+// that were created in that variable
+// by the time the function was born, so to say.
+// So this is the birthplace of or event handler function here.
+// And therefore the function
+// remembers all the variables present at a time of its birth.
+
+// We can also say
+// that the header is in the backpack of this function.
+// So that explanation works as well.
+// And you can go even further and deep into theory
+// and basically try to explain
+// how all of this works behind the scenes.
+
+// But that I already explained to you
+// in the more theory lecture,
+// and so I'm not gonna go into that again.
+// All right.
+
+// So hopefully, you managed to explain this to yourself,
+// maybe to your dog, whatever.
+// But what's important is that you now understand
+// how the closure works
+// and how and when it appears.
+// So this was yet another great example
+// of a closure appearing.
+// Anyway with this we've finished
+// this pretty important section on functions.
